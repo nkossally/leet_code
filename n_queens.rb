@@ -31,24 +31,19 @@ def n_queens_recur(n, row, arrangements)
 
     (0...n).each do |column|
       bool = true
-
       arrangement.each_with_index do |string, idx|
-
-
         if string[column] == 'Q'
           bool = false
+          break
         end
         if column+row-idx < n && string[column+row-idx] == 'Q'
           bool = false
+          break
         end
         if column-row+idx >= 0 && string[column-row+idx] == 'Q'
           bool = false
+          break
         end
-        if(bool)
-          cat = 5
-          
-        end
-
       end
       if(bool)
         str = ""
@@ -68,4 +63,4 @@ def n_queens_recur(n, row, arrangements)
   
 end
 
-puts solve_n_queens(5)
+puts solve_n_queens(4)
