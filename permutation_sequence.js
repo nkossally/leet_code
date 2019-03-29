@@ -8,17 +8,15 @@ var getPermutation = function(n, k) {
     digits.push(num.toString());
     num += 1;
   }
-  console.log(digits);
+  let divisor = factorial(n - 1 - count);
   while (count < n) {
-    remainder = Math.ceil(k / factorial(n - 1 - count));
-    console.log("remainder: " + remainder);
+    remainder = Math.ceil(k / divisor);
     result += digits[(remainder - 1 + digits.length) % digits.length];
-    console.log("result: " + result);
 
     digits.splice((remainder - 1) % digits.length, 1);
-    console.log("digits: " + digits);
+    k = k % divisor;
+    divisor /= n - 1 - count;
 
-    k = k % factorial(n - 1 - count);
     count += 1;
   }
   return result;
