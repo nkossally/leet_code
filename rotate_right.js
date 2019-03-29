@@ -2,41 +2,27 @@ var rotateRight = function(head, k) {
   if (!head) {
     return null;
   }
-
-  length = 0;
-  pointer = head;
-  while (pointer) {
+  let length = 0;
+  let pointer = head;
+  while (pointer.next) {
     length += 1;
     pointer = pointer.next;
   }
+  length += 1;
   k = k % length;
+  let pointer1 = head;
+  let i = 0;
 
-  pointer1 = head;
-  pointer2 = head;
-  i = 0;
-  while (i < k) {
+  while (i < length - k - 1) {
     pointer1 = pointer1.next;
-    if (!pointer1) {
-      pointer1 = head;
-    }
     i += 1;
   }
-  while (pointer1.next) {
-    pointer1 = pointer1.next;
-    pointer2 = pointer2.next;
-  }
+  pointer.next = head;
+  head = pointer1.next;
+  pointer1.next = null;
 
-  pointer1.next = head;
-  head = pointer2.next;
-  pointer2.next = null;
   return head;
 };
-
-class Node {
-  constructor(val, next = null) {
-    (this.val = val), (this.next = next);
-  }
-}
 node5 = new Node(5);
 node4 = new Node(4, node5);
 node3 = new Node(3, node4);
