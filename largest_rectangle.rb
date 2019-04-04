@@ -4,6 +4,7 @@ def largest_rectangle_area(heights)
   while curr < heights.length
   start = curr
   stop = curr
+  next_curr = nil
   while start > 0 && heights[start-1] >= heights[curr]
     start -= 1
   end
@@ -14,9 +15,10 @@ def largest_rectangle_area(heights)
   if !max || area>max
     max = area
   end
-    # curr = stop > curr ? stop+1 : curr+1
-    curr = curr+1
-
+    curr += 1
+    
   end
   return max ? max : 0
 end
+
+p largest_rectangle_area([2,1,5,6,2,3])
