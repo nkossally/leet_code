@@ -5,31 +5,29 @@ def is_scramble(s1, s2)
   end
 
   if same_letters(s1, s2)
-    s1_left = s1[0...s1.length/2]
-    s1_right = s1[s1.length/2..-1]
-    s2_left = s2[0...s2.length/2]
-    s2_right = s2[s2.length/2..-1]
-    if is_scramble(s1_left, s2_left) && is_scramble(s1_right, s2_right)
-      return true
-    end
-    if s1.length % 2 == 0
-      if is_scramble(s1_left, s2_right) && is_scramble(s1_right, s2_left)
-        return true
-      end
-    end
-    if s1.length % 2 == 1
-      s1_left = s1[0..s1.length/2]
-      s1_right = s1[s1.length/2+1..-1]
-      if is_scramble(s1_left, s2_right) && is_scramble(s1_right, s2_left)
-        return true
-      end
-      s2_left = s2[0..s2.length/2]
-      s2_right = s2[s2.length/2+1..-1]
+    for partition in (1..s1.length/2)
+      s1_left = s1[0...partition]
+      s1_right = s1[partition..-1]
+      s2_left = s2[0...partition]
+      s2_right = s2[partition..-1]
       if is_scramble(s1_left, s2_left) && is_scramble(s1_right, s2_right)
         return true
       end
-      s1_left = s1[0...s1.length/2]
-      s1_right = s1[s1.length/2..-1]
+
+      s2_left = s2[0...s2.length-partition]
+      s2_right = s2[s2.length-partition..-1]
+      if is_scramble(s1_left, s2_right) && is_scramble(s1_right, s2_left)
+        return true
+      end
+
+      s1_left = s1[0...s1.length-partition]
+      s1_right = s1[s1.length-partition..-1]
+      if is_scramble(s1_left, s2_left) && is_scramble(s1_right, s2_right)
+        return true
+      end
+
+      s2_left = s2[0...partition]
+      s2_right = s2[partition..-1]
       if is_scramble(s1_left, s2_right) && is_scramble(s1_right, s2_left)
         return true
       end
