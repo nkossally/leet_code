@@ -3,26 +3,34 @@ DIGITS = (1..9).map{ |num| num.to_s }
 
 def solve_sudoku(board)
   pos = next_pos(board)
-  return board unless pos
-  solve_sudoku_recursion(board, pos)
-end
-
-def solve_sudoku(board, pos)
-
-  valid_nums = valid_nums(board, pos)
-  if valid_nums.empty?
+  if pos
+    valid_nums = valid_nums(board, pos)
+    if valid_nums.length == 0
+      return false
+    end
+    for num in valid_nums
+      board[pos[0]][pos[1]] = num
+      tryNum = solve_sudoku(board)
+      if tryNum
+        return tryNum
+      else
+        board[pos[0]][pos[1]] = '.'
+      end
+    end
     return false
+  else
+    return board
   end
-  valid_nums.each do |num|
-    # debugger
-    new_board = board.dup
-    new_board[pos[0]][pos[1]] = num
-    solve_sudoku(new_board)
- 
-  end
-  solve_sudoku(board)
 end
 
+def arrayString(arr)
+  str = ''
+  for innerArr in arr
+    str += '['+innerArr.join(',')+']'
+  end
+  return str
+
+end
 
 def next_pos(board)
   pos = nil
@@ -37,7 +45,7 @@ def next_pos(board)
 end
 
 def valid_nums(board, pos)
-  valid_nums = DIGITS
+  valid_nums = DIGITS.dup
   (0..8).each do |row|
     valid_nums.delete(board[row][pos[1]])
   end
@@ -49,16 +57,17 @@ def valid_nums(board, pos)
       valid_nums.delete(board[row][col])
     end
   end
-
-
   valid_nums
-
 end
 
-board = [["5", "3", ".", ".", "7", ".", ".", ".", "."], ["6", ".", ".", "1", "9", "5", ".", ".", "."], [".", "9", "8", ".", ".", ".", ".", "6", "."], ["8", ".", ".", ".", "6", ".", ".", ".", "3"], ["4", ".", ".", "8", ".", "3", ".", ".", "1"], ["7", ".", ".", ".", "2", ".", ".", ".", "6"], [".", "6", ".", ".", ".", ".", "2", "8", "."], [".", ".", ".", "4", "1", "9", ".", ".", "5"], [".", ".", ".", ".", "8", ".", ".", "7", "9"]]
+board = [
+[".",".","9","7","4","8",".",".","."],
+["7",".",".",".",".",".",".",".","."],
+[".","2",".","1",".","9",".",".","."],
+[".",".","7",".",".",".","2","4","."],
+[".","6","4",".","1",".","5","9","."],
+[".","9","8",".",".",".","3",".","."],
+[".",".",".","8",".","3",".","2","."],
+[".",".",".",".",".",".",".",".","6"],
+[".",".",".","2","7","5","9",".","."]]
 p solve_sudoku(board)
-
-# display board
-# display pos
-# display valid_nums
-
