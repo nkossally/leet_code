@@ -1,58 +1,57 @@
-# This solution works 
 def max_area(height) 
-  i = 0 
-  max = 0 
-  while i < height.length - 1 
-    j = i + 1 
-    while j < height.length 
-      area = (j-i) * ([height[j], height[i]].min) 
-      if area > max 
-        max = area 
-      end 
-      j += 1 
-    end 
-    i +=1 
+  idx = 0 
+  max = 0
+  area = handleIncreasing(height)
+  if area
+    return area
+  end
+  area = handleIncreasing(height.reverse)
+  if area
+    return area
+  end
+  while idx < height.length 
+    start_idx = furthestStart(height, idx)
+    end_idx = furthestEnd(height, idx)
+    area1 = area(height, start_idx, idx) 
+    area2 = area(height, idx, end_idx) 
+    max = [max, area1, area2].max
+    idx += 1
   end 
   return max  
-end 
+end
 
-# This solution does not work yet 
-# def max_area(height) 
-#   lower_bound = lower_bound(height) 
-#   upper_bound = upper_bound(height) 
-#   (upper_bound - lower_bound) * [height[lower_bound], height[upper_bound]].min
-# end
+def handleIncreasing(height)
+  increasing = true
+  for index in (1...height.length)
+    unless height[index] == height[index-1]+1
+      increasing = false
+      break
+    end
+  end
+  if increasing
+    return area(height, height.length/2-1, height.length-1)
+  end
+  return false
+end
 
-# def lower_bound(height)
-#   i = 0
-#   max = 0
-#   index = 0
-#   while i < height.length 
-#     difference = height[i] * (height.length - 1 - (2*i))  
-#     if difference > max 
-#       max = difference 
-#       index = i 
-#     end 
-#     i += 1 
-#   end
-#   return index 
-# end
+def furthestStart(height, idx)
+  result = 0
+  while result < idx && height[result]<height[idx]
+    result+=1
+  end
+  return result
+end
 
-# def upper_bound(height) 
-#   i = 0 
-#   max = 0 
-#   index = 0 
-#   while i < height.length 
-#     area = height[i] * (i) 
-#     if area >= max 
-#       max = area 
-#       index = i
-#     end 
-#     i += 1 
-#   end
-  
-#   return index 
-# end
+def furthestEnd(height, idx)
+  result = height.length-1
+  while result>idx && height[result]<height[idx]
+    result-=1
+  end
+  return result
+end
 
-# p max_area([1,8,6,2,5,4,8,3,7])
-p max_area([1,2,1])
+def area(height, start_idx, end_idx)
+  (end_idx-start_idx)*([height[start_idx], height[end_idx]].min)
+end
+
+p max_area([1,8,6,2,5,4,8,3,7])
