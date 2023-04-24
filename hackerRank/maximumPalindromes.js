@@ -46,21 +46,56 @@ function initialize(s) {
 
 function answerQuery(l, r) {
     // Return the answer for this query modulo 1000000007.
-    console.log(word)
-    const str = word.slice(l, r + 1);
+    const str = word.slice(l - 1, r);
     const letters = "abcdefghijklmnopqrstuvwxyz";
     let counts = {};
+    let maxVal = 0;
     letters.split("").forEach(letter =>{
         counts[letter] = 0;
     })
     str.split("").forEach(letter => {
         counts[letter]++;
+        if(counts[letter] > maxVal){
+            maxVal = counts[letter]
+        }
     })
-    let doubles = 0;
+    let numerator = 1;
+    let denominator = 1;
     let singles = 0;
+    let doubles = 0;
+    const factorialStore = {0: 1};
+    const max = 26 * maxVal/2
+    let currFactorial = 1
+    for(let i = 1; i < max; i++){
+        currFactorial *= i;
+        factorialStore[i] = currFactorial;
+    }
+
+    const factorial = n =>{
+        if(factorialStore[n]) return factorialStore[n];
+    }
+
     letters.split("").forEach(letter =>{
-        counts[letter] = 0;
+        const val = counts[letter];
+        if(val % 2 === 1){
+            doubles += (val - 1)/2;
+            singles += 1;
+            denominator *= factorialStore[(val - 1) / 2];
+        } else {
+            doubles += val/2;
+            denominator *= factorialStore[val / 2];
+        }
     })
+    let result = factorialStore[doubles] / denominator;
+    if(singles > 0 ){
+        // can add a single single or add nothing to middle of palindrome
+        result *= singles
+    }
+    console.log(counts)
+    console.log(singles, doubles)
+    // if(doubles === 0) result = singles;
+    // console.log(result)
+    return Math.floor(result % (Math.pow(10, 9) + 7));
 }
 
 function main() {
