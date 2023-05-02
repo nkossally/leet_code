@@ -31,3 +31,6 @@ console.log(set2)
 console.log(newSet)
 let hello = "hello"
 console.log(hello)
+const testSplice = [1, 2,3, 4, 5];
+testSplice.splice(testSplice.indexOf(2), 1ti)
+console.log(testSplice)
