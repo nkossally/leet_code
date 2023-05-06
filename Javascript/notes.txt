@@ -1,0 +1,21 @@
+ES6 features
+block scoped variables???
+string interpolation(`hello ${name}`)
+arrow function: this is enclosed to the scope with arrow functions
+    helpful with anonymous functions () =>{}
+    normal functions have this assigned to where declared
+    arrow functions have this defined in the scope of where function is defined
+spread operator
+destructuring:
+    const human = { name: "", age: "" }
+    const { name } = human
+    console.log( name )
+    const [a, b] = arr;
+    console.log(a, b)
+    function doSomething({name}){
+        console.log(name)
+    }
+    doSomething({ name: "rajat" })
+Object.assign
+    const human = { name: "rajat", age: "33" }
+    const humanCopy = Object.assign({}, human)

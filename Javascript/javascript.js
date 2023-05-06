@@ -32,5 +32,57 @@ console.log(newSet)
 let hello = "hello"
 console.log(hello)
 const testSplice = [1, 2,3, 4, 5];
-testSplice.splice(testSplice.indexOf(2), 1ti)
+testSplice.splice(testSplice.indexOf(2), 1)
 console.log(testSplice)
+console.log("abcde".substring(1, 3))
+console.log("abcde".slice(1, 3))
+const human = { name: "najja", age: "32" }
+const { name } = human
+console.log( name )
+const destructureArray = ["apple", 3, "banana", 5]
+const [element1, element2] = destructureArray;
+console.log(element1, element2)
+
+const testFilter = [1, 2, 3, 4, 5, 6, 7, 8]
+testFilter.filter(elem => elem < 5)
+console.log(testFilter)
+console.log(testFilter.filter(elem => elem < 5))
+
+class Interval {
+    constructor(start, end){
+        this.start = start;
+        this.end = end;
+    }
+}
+const testInterval = new Interval(3, 4);
+console.log(testInterval.start, testInterval.end)
+
+const testSetHas = new Set([1, 2, 3, 4]);
+console.log(testSetHas.has(4))
+testSetHas.delete(4)
+testSetHas.delete(5)
+console.log(testSetHas.has(4))
+testSetHas.add(4)
+console.log(testSetHas.has(4))
+console.log("iterating through set")
+testSetHas.forEach(elem =>{
+    console.log(elem)
+    testSetHas.delete(elem)
+})
+console.log(testSetHas.size)
+
+const testDeleteArray = [4, 4, 4,4,4, 5,5,5,5];
+for(let i = 0; i < testDeleteArray.length; i++){
+    console.log("i", i)
+    if(testDeleteArray[i] === 4){
+        testDeleteArray.splice(i, 1);
+        i--;
+    }
+}
+console.log(testDeleteArray)
+for(let i = 0; i < testDeleteArray.length; i++){
+    console.log("i", i)
+    testDeleteArray.splice(i, 1);
+    i--;
+}
+console.log(testDeleteArray)
