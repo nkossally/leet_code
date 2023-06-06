@@ -86,3 +86,45 @@ for(let i = 0; i < testDeleteArray.length; i++){
     i--;
 }
 console.log(testDeleteArray)
+
+console.log(-1 % 2)
+console.log(-2 % 2)
+
+const abFab = new Set([1, 2, 3])
+const fab = new Set([3, 4, 5])
+abFab.add(fab);
+console.log(abFab)
+
+const deleteStuff = [ 111, 222, 333];
+deleteStuff.splice(-1, 1);
+console.log(deleteStuff)
+
+const funObj = {1: 1, 2: 2}
+delete funObj[2]
+console.log(funObj)
+
+
+const aSet = new Set([[1, 2, 3], 1, 2, new Set([1, 2, 3])])
+const bSet = new Set(aSet);
+aSet.delete(1)
+console.log(aSet)
+console.log(bSet)
+console.log(bSet.size)
+ 
+const mario = [1, 2, 3]
+const luigi = [3, 3, 4, 5]
+const octopusoir = Array.from(new Set([...mario, ...luigi]))
+console.log(octopusoir)
+
+class Node{
+    constructor(val){
+        this.val = val;
+        this.next = null;
+    }
+}
+
+const AnotherNode = 
+
+
+const node = new Node(5)
+console.log(node)
