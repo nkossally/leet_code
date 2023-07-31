@@ -88,3 +88,8 @@ Promise.race([
 ]).then(message =>{
     console.log(message)
 })
+
+const arrgg = [1, 2, 3, 4, "hey"];
+console.log(arrgg.find(elem => elem === 4))
+console.log(arrgg.find(elem => elem[0] === "h"))
+console.log(arrgg.find(elem => elem === 5))
