@@ -123,8 +123,14 @@ class Node{
     }
 }
 
-const AnotherNode = 
 
 
 const node = new Node(5)
 console.log(node)
+
+const stringa = "abcde"
+const arraya = stringa.split("");
+console.log(stringa.indexOf("d"))
+console.log(arraya.indexOf("d"))
+console.log(arraya.find(elem => elem === "d"))
+console.log(arraya.findIndex(elem => elem === "d"))
