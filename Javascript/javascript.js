@@ -134,3 +134,19 @@ console.log(stringa.indexOf("d"))
 console.log(arraya.indexOf("d"))
 console.log(arraya.find(elem => elem === "d"))
 console.log(arraya.findIndex(elem => elem === "d"))
+
+// Bit Manipulation
+const num = 10
+const num2 = 4
+console.log(num.toString(2))
+console.log(num2.toString(2))
+console.log((num | num2).toString(2))
+console.log(num | num2)
+console.log((~num2).toString(2))
+console.log(~num2)
+console.log((num & num2).toString(2))
+console.log((num ^ num2).toString(2))
+console.log((num ^ 2).toString(2))
+
+console.log((num >> 1).toString(2))
+console.log((num >> 2).toString(2))
