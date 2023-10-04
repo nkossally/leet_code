@@ -3,6 +3,8 @@
 
 
 function matchingPairs(s, t) {
+    if(s.length === 0) return 0
+
     const matchingIndices = new Set();
     for(let i = 0; i < s.length; i++){
       if(s[i] === t[i]) matchingIndices.add(i)
@@ -38,7 +40,8 @@ function matchingPairs(s, t) {
     }
     if(canIncreaseByTwo) return matchingIndices.size + 2;
     if(canIncreaseByOne)return matchingIndices.size + 1;
-  
+    return  matchingIndices.size
+
     
   }
   
@@ -99,3 +102,20 @@ function matchingPairs(s, t) {
   var output_3 = matchingPairs(s_3, t_3);
   check(expected_3, output_3); 
   
+  var s_4 = "abcdi";
+var t_4 = "efghi";
+var expected_4 = 1;
+var output_4 = matchingPairs(s_4, t_4);
+check(expected_4, output_4); 
+
+var s_5 = "";
+var t_5 = "";
+var expected_5 = 0;
+var output_5 = matchingPairs(s_5, t_5);
+check(expected_5, output_5); 
+
+var s_6 = "abcd";
+var t_6 = "efgh";
+var expected_6 = 0;
+var output_6 = matchingPairs(s_6, t_6);
+check(expected_6, output_6); 
