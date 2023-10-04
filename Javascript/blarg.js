@@ -106,3 +106,33 @@ console.log(
     ]
   )
 );
+
+class TestClass{
+  constructor(a, b){
+    this.hello = a;
+    this.good = b
+  }
+}
+
+function TestFunc(a, b){
+  this.page = a;
+  this.book = b;
+  return this;
+}
+
+const a = TestFunc("banana", "pickle")
+console.log(a.page)
+console.log(a.book)
+const b = new TestClass("banana", "pickle")
+console.log(b.hello)
+console.log(b.good)
+
+const c = new TestClass("banana", "pickle")
+const d = new TestClass("banana", "pickle")
+const e = new TestClass("my", "day")
+
+console.log(c === d)
+console.log(c === e)
+
+const strFromCharCode = String.fromCharCode(97, 98, 99);
+console.log(strFromCharCode)
