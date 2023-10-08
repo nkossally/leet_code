@@ -1,7 +1,4 @@
-// palindrom with one wrong
-
-// power
-
+// Write a powr function with only the operations +, *, /, -
 const power = (a, b) =>{
     if(b === 0) return 1;
     let exponent = b;
