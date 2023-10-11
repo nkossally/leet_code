@@ -9,28 +9,24 @@ class TreeNode {
 //param A : root node of tree
 //return an integer
 function maxPathSum(A) {
-    const helper = node =>{
-        const val = node.data;
-        const left = node.left ? helper(node.left) : 0;
-        const right = node.right ? helper(node.right) : 0;
-        const leftOrRight = Math.max(left, right)
-        return val + Math.max(0, leftOrRight)
-    }
+  let result = -1 / 0;
 
-    let max = A.data;
-    let heap =[A]
-    while(heap.length > 0){
-        const node = heap.shift();
-        max = Math.max(max, helper(node))
-        if(node.left) heap.push(node.left)
-        if(node.right) heap.push(node.right)
-    }
-    return max
+  const sum = (node) => {
+    if (node === null) return 0;
+    const left = Math.max(0, sum(node.left));
+    const right = Math.max(0, sum(node.right));
+    result = Math.max(result, node.data + left + right);
+    return node.data + Math.max(left, right);
+  };
+
+  sum(A);
+  console.log(result)
+  return result;
 }
 
-const node = new TreeNode(3)
-const node2 = new TreeNode(1)
-const node3 = new TreeNode(2)
+const node = new TreeNode(3);
+const node2 = new TreeNode(1);
+const node3 = new TreeNode(2);
 node.left = node2;
-node.right = node3
-maxPathSum(node)
+node.right = node3;
+maxPathSum(node);
