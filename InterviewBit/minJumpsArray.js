@@ -26,3 +26,19 @@ function jumpSlower(A) {
   }
   return dp[A.length - 1] ? dp[A.length - 1] : -1;
 }
+
+function jump(A) {
+  if (A.length <= 1) return 0;
+  let current = 0;
+  let farthest = 0;
+  let jumps = 0;
+
+  for (let i = 0; i < A.length - 1; i++) {
+    farthest = Math.max(farthest, A[i] + i);
+    if (i === current) {
+      current = farthest;
+      jumps++;
+    }
+  }
+  return current >= A.length - 1 ? jumps : -1;
+}
