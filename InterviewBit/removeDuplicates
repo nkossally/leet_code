@@ -1,0 +1,74 @@
+// Definition for singly-linked list.
+//    function Node(data){
+//      this.data = data
+//      this.next = null
+//    }
+
+module.exports = {
+    //param A : head node of linked list
+    //return the head node in the linked list
+    deleteDuplicates: function (A) {
+        if (!A.next) return A
+        let curr = A;
+        const seen = new Set();
+        const remove = new Set()
+        while (curr) {
+            if (seen.has(curr.data)) {
+                remove.add(curr.data)
+            }
+            seen.add(curr.data)
+            curr = curr.next;
+        }
+
+        let prev
+        let newHead;
+        curr = A
+        console.log(remove)
+        while (curr) {
+            if (remove.has(curr.data)) {
+                if (prev) {
+                    prev.next = curr.next;
+                }
+            } else {
+                prev = curr;
+            }
+            console.log(remove.has(A.data), !remove.has(curr.data), !newHead)
+            if(remove.has(A.data) && !remove.has(curr.data) && !newHead){
+                console.log("removing head")
+                newHead = curr
+            }
+            curr = curr.next;
+
+        }
+        if(!newHead) newHead = A
+        const result =  remove.has(newHead.data) ? null : newHead;
+        console.log(result)
+        return result
+    }
+};
+
+class Node {
+    constructor(data) {
+      this.data = data;
+      this.next = null;
+    }
+  }
+
+let node = new Node(1)
+const head = node
+node.next = new Node(1)
+node = node.next;
+node.next = new Node(2)
+node = node.next;
+node.next = new Node(2)
+node = node.next;
+node.next = new Node(6)
+node = node.next;
+node.next = new Node(7)
+node = node.next;
+node.next = new Node(8)
+node = node.next;
+node.next = new Node(7)
+node = node.next;
+node.next = new Node(7)
+module.exports.deleteDuplicates(head)
