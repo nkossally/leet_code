@@ -27,7 +27,6 @@ module.exports = {
     };
 
     const generateChess = (arr) => {
-      console.log("arr", arr);
       if (arr.length === A) {
         result.push(arr);
         return;
@@ -45,7 +44,6 @@ module.exports = {
         });
         if (canPlaceHere) {
           const str = makeQueenString(col);
-          console.log("str", str);
           generateChess([...arr, str]);
         }
       }
@@ -83,7 +81,6 @@ module.exports = {
     };
 
     const makeBoard = (arr, numsLeft) => {
-        console.log(arr, numsLeft)
       if (arr.length === A) {
         const board = [];
         arr.forEach((num) => {
@@ -116,4 +113,4 @@ module.exports = {
   },
 };
 
-module.exports.solveNQueens2(5);
+module.exports.solveNQueens2(15);
