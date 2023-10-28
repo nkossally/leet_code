@@ -28,3 +28,17 @@ module.exports = {
     return bestSum;
   },
 };
+
+
+const len = (str) => { 
+  let size = Buffer.from(str).length; 
+  return size; 
+}  
+  
+console.log(len("Geeksforgeeks")) 
+console.log(len("true")) 
+console.log(len("false")) 
+console.log(len("12345")) 
+console.log(len("20€")) 
+console.log(len("????"))
+console.log(len("Αα"))
