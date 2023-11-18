@@ -66,6 +66,7 @@ module.exports = {
                 i++;
                 numerator = numerator % mod;
             }
+            if(divisorArr.length > 0) console.log(num, divisors, divisorArr)
 
             return numerator % mod;
         };
