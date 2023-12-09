@@ -37,7 +37,6 @@ module.exports = {
       rooms[j].push(A[i]);
       i++;
     }
-    console.log(rooms.length);
     return rooms.length;
   },
   solve2: function (A) {
@@ -59,7 +58,7 @@ module.exports = {
     console.log(starts);
     console.log(ends);
     while (i < starts.length && j < ends.length) {
-      console.log(i, j, starts[i], ends[j],starts[i] < ends[j]);
+      console.log(starts[i], ends[j],starts[i] < ends[j]);
 
       if (starts[i] < ends[j]) {
         rooms++;
@@ -69,7 +68,7 @@ module.exports = {
         j++;
       }
       max = Math.max(max, rooms);
-      console.log(max);
+      console.log(rooms, max);
     }
     console.log(max);
 
