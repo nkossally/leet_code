@@ -74,6 +74,7 @@ module.exports = {
       }
     }
 
+    console.log(count)
     return count;
   },
 
@@ -116,10 +117,9 @@ module.exports = {
       }
     }
 
-    console.log(A)
     console.log(result)
     return result;
   },
 };
 
-module.exports.black2([ "OOOXOOO", "OOXXOXO", "OXOOOXO" ])
+module.exports.black([ "OOOXOOO", "OOXXOXO", "OXOOOXO" ])
