@@ -1,5 +1,11 @@
 // See almostPalindrome and power.js for phonenscreen
 
+// function that returns whethr string number is well formed
+// -1.8
+// -
+// -.
+// 8.7.5
+
 //Write a function that returns the kth missing number in an array
 // O(n + k)
 const kthMissing1 = (arr, k) => {
