@@ -38,6 +38,26 @@ var numberToWords = function(num) {
 
     }
 
-    const numStr = 
+    const numStr = num.toString();
+    const arr = []
+    let result = "";
+
+    for(let i = numStr.length - 1; i >= 0; i -= 3){
+        const subStr = numStr.slice(i - 2, i + 1);
+        arr.push(subStr)
+    }
+    for(let i = 0; i < arr.length; i++){
+        const str = arr[i]
+        let convert = handleBelowThousand(str);
+        if(i === 1){
+            convert += " thousand"
+        } else if(i === 2){
+            convert += " million"
+        } else if(i === 3){
+            convert += " billion"
+        }
+        result = convert + " " + result;
+    }
+
     
 };
