@@ -32,27 +32,29 @@ var strongPasswordChecker = function (password) {
     }
     if (str.length >= 3) repeats.push(str)
 
-    // repeats.sort((a, b) => {
-    //     if(a.length % 3 === 0) return -1
-    //     if(b.length % 3 === 0) return 1
-    //     return 0;
-    // })
-
-    // repeats.sort((a, b) => {
-    //     return b.length - a.length
-    // })
-
-    const getTripleIdx = () => {
-        let result;
-        for (let i = 0; i < repeats.length; i++) {
-            const str = repeats[i]
-            if (str.length === 3) {
-                result = i;
-                break
+    const getPriorityRepeatIdx = () =>{
+        let zeroIdx;
+        let oneIdx;
+        let twoIdx;
+        for(let i = 0; i < repeats.length; i++){
+            if(zeroIdx === undefined && repeats[i].length % 3 === 0){
+                zeroIdx = i;
+                break;
             }
-
+            if(oneIdx === undefined && repeats[i].length % 3 === 1){
+                oneIdx = i
+            }
+            if(twoIdx === undefined && repeats[i].length % 3 === 2){
+                twoIdx = i
+            }
         }
-        return result
+        if(zeroIdx !== undefined){
+            return zeroIdx
+        } else if(oneIdx !== undefined){
+            return oneIdx
+        } else {
+            return twoIdx
+        }
     }
 
     for (let i = 0; i < password.length; i++) {
@@ -72,32 +74,36 @@ var strongPasswordChecker = function (password) {
         if (hasDigit && hasLowerCase && hasUpperCase) break;
     }
 
-    console.log(repeats, missingCount)
-
-    const alterRepatsWithDelete = () => {
-        repeats[0] = repeats[0].slice(1)
-        if (repeats[0].length < 3) repeats.splice(0, 1)
-    }
-
-
-    let changeIdx = 0
     const alterRepatsWithChange = () => {
-        repeats[changeIdx] = repeats[changeIdx].slice(3)
-        if (repeats[changeIdx].length < 3){
-            repeats.splice(changeIdx, 1)
-        } else {
-            changeIdx++
+        repeats[0] = repeats[0].slice(3)
+        if (repeats[0].length < 3){
+            repeats.splice(0, 1)
         } 
-        changeIdx = changeIdx % repeats.length
     }
 
     let changes = 0;
     let length = password.length
+
+    while (missingCount > 0 && repeats.length > 0 && length < 6) {
+        missingCount--
+        alterRepatsWithChange()
+        length++
+        changes++
+        console.log("flag 1")
+    }
+
     while (missingCount > 0 && repeats.length > 0) {
         missingCount--
         alterRepatsWithChange()
         changes++
         console.log("flag 1")
+    }
+
+    while (repeats.length > 0 && length < 6) {
+        alterRepatsWithChange()
+        length++
+        changes++
+        console.log("flag 3")
     }
 
     while (missingCount > 0 && length < 6) {
@@ -114,21 +120,6 @@ var strongPasswordChecker = function (password) {
         console.log("flag 10")
     }
 
-    while (repeats.length > 0 && length < 6) {
-        alterRepatsWithChange()
-        length++
-        changes++
-        console.log("flag 3")
-    }
-
-    while (length > 20 && repeats.length > 0 && getTripleIdx() !== undefined) {
-        length--;
-        const idx = getTripleIdx()
-        repeats.splice(idx, 1)
-        changes++
-        console.log("flag 5")
-    }
-
     while (missingCount > 0) {
         missingCount--;
         length++
@@ -142,39 +133,8 @@ var strongPasswordChecker = function (password) {
         console.log("flag 8")
     }
 
-
-    while (length >= 23 && getTripleIdx() !== undefined) {
-        length -= 3;
-        const idx = getTripleIdx()
-        repeats.splice(idx, 1)
-        changes += 3
-        console.log("flag 11")
-    }
-
-    let i = 0;
-    const blarg = () =>{
-        let idx
-        let zeroIdx;
-        let oneIdx;
-        let twoIdx;
-        for(let i = 0; i < repeats.length; i++){
-            if(zeroIdx === undefined && repeats[i].length % 3 === 0){
-                zeroIdx = i
-            }
-            if(oneIdx === undefined && repeats[i].length % 3 === 1){
-                oneIdx = i
-            }
-            if(twoIdx === undefined && repeats[i].length % 3 === 2){
-                twoIdx = i
-            }
-        }
-        if(zeroIdx !== undefined){
-            idx = zeroIdx
-        } else if(twoIdx !== undefined){
-            idx = twoIdx
-        } else {
-            idx = oneIdx
-        }
+    const alterPriorityRepeat = () =>{
+        const idx = getPriorityRepeatIdx()
         repeats[idx] = repeats[idx].slice(1)
         if (repeats[idx].length < 3) {
             repeats.splice(idx, 1)
@@ -182,8 +142,7 @@ var strongPasswordChecker = function (password) {
     }
 
     while (length > 20 && repeats.length > 0) {
-        console.log(repeats)
-        blarg()
+        alterPriorityRepeat()
         length--;
         changes++
         console.log("flag 12")
@@ -196,9 +155,6 @@ var strongPasswordChecker = function (password) {
         console.log("flag 9")
     }
 
-    console.log("changes", changes)
-    console.log(repeats)
-
     repeats.forEach(str => {
         changes += Math.floor(str.length / 3)
     })
@@ -206,7 +162,3 @@ var strongPasswordChecker = function (password) {
     return changes
 
 };
-// strongPasswordChecker("bbaaaaaaaaaaaaaaacccccc")
-strongPasswordChecker("ABABABABABABABABABAB1")
-
-
