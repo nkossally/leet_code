@@ -55,3 +55,13 @@ print(astring[0:12:2])
 print(astring[0:12:1])
 
 print(astring[::-1])
+
+print(astring.upper())
+print(astring.lower())
+
+print(astring.startswith("Hello"))
+print(astring.endswith("asdfasdfasdf"))
+
+astring = "Hello world!"
+afewwords = astring.split(" ")
+print(afewwords)
