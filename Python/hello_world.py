@@ -125,3 +125,21 @@ car3 = AnotherVehicle("car3", "van", "purple", 5)
 
 print(car3.description())
 # print(car3)
+
+
+
+phonebook = {"John" : 938477566,"Jack" : 938377264,"Jill" : 947662781}
+for name, number in phonebook.items():
+    print("Phone number of %s is %d" % (name, number))
+
+phonebook = {"John" : 938477566,"Jack" : 938377264,"Jill" : 947662781}
+for item in phonebook.items():
+    print("Phone number of %s is %d" % (item[0], item[1]))
+
+phonebook = {"John" : 938477566,"Jack" : 938377264,"Jill" : 947662781}
+for key in phonebook.keys():
+    print("Phone number of %s is %d" % (key, phonebook[key]))
+
+phonebook = {"John" : 938477566,"Jack" : 938377264,"Jill" : 947662781}
+for value in phonebook.values():
+    print("Phone number of %s is %d" % ("name", value))
