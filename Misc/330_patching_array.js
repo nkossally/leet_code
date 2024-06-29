@@ -3,95 +3,82 @@
  * @param {number} n
  * @return {number}
  */
-var minPatches = function(nums, n) {
-    let reachableNums = []
-    let count = 0;
-    const chosenNums = []
-    let lastAdded
+var minPatches = function (nums, n) {
+    if (nums.length === n) return 0
 
-    const putInOrder = num =>{
-        if(reachableNums.length === 0){
-            reachableNums.push(num)
-            return;
-        }
+    let count = 0
 
-        const helper = (min, max) =>{
-            if(max <= min){
-                return min
+    const getCanGetNum = num =>{
+        let canGetNum = false
+
+        const helper = (idx, sum) => {
+            if(canGetNum) return
+            if(sum === num) {
+                canGetNum = true;
+                return
             }
+            if(idx === nums.length) return
+            
+            if(nums[idx] + sum > num) return
 
-            const mid = Math.floor((min + max) / 2)
-
-            if(reachableNums[mid] === num){
-                return mid
-            } else if(reachableNums[mid] > num){
-                return helper(min, mid - 1)
-            } else {
-                return helper(mid + 1 , max)
-            }
+            helper(idx + 1, sum + nums[idx])
+            helper(idx + 1, sum)
         }
 
-        const length = reachableNums.length - 1 >= 0 ? reachableNums.length - 1 : 0;
-        const idx = helper(0, length)
+        helper(0, 0)
 
-        if(reachableNums[idx] > num){
-            reachableNums.splice(idx,0, num)
-        } else if(reachableNums[idx] < num){
-            reachableNums.splice(idx + 1,0, num)
-        }
+        return canGetNum
     }
 
-    const getSums = (idx, sum) =>{
-        if(idx === nums.length){
-            if(sum <= n){
-                putInOrder(sum)
-            }
-            return
-        }
-        getSums(idx + 1, sum)
-        getSums(idx + 1, sum + nums[idx])
-    }
-
-    getSums(0, 0)
-    console.log(reachableNums)
-
-    const getNewNums = () => {
-        let newNums = []
-        let chosenNum
-
-        let lowerBound = lastAdded ? lastAdded + 1 : 1;
-
-        const reachableNumsSet = new Set(reachableNums)
-
-        for(let i = lowerBound; i <= n; i++){
-            const possibleNewNums = []
-            reachableNums.forEach(sum => {
-                if(!reachableNumsSet.has(sum + i) && sum + i <= n){
-                    possibleNewNums.push(sum + i)
+    let i = 1;
+    let lastIdx = 0;
+    while(i <= n){
+        const numsSet = new Set(nums)
+        if(!numsSet.has(i)){
+            if(!getCanGetNum(i)){
+                let idx = lastIdx;
+                while(idx < nums.length && nums[idx] < i ){
+                    idx++
                 }
-
-            })
-            if(possibleNewNums.length > newNums.length){
-                chosenNum = i
-                newNums = possibleNewNums
+                nums.splice(idx, 0, i)
+                lastIdx = idx
+                count++
             }
         }
-        chosenNums.push(chosenNum)
-        lowerBound = chosenNum
-        return newNums
+        i++
     }
 
 
-    while(reachableNums.length < n + 1 ){
-        const newNums = getNewNums()
-        newNums.forEach(num =>{
-            putInOrder(num)
-        })
-        count++
-    }
-
-    console.log(chosenNums)
     return count
 };
 
-console.log(minPatches([1,2,31,33] , 2147483647))
+console.log(minPatches([1,2,31,33] , 100))
+
+
+
+/**
+ * @param {number[]} nums
+ * @param {number} n
+ * @return {number}
+ */
+var minPatchesBetter = function (nums, n) {
+    let miss = 1
+    let  result = 0
+    let i = 0
+
+     while( miss <= n){
+         if (i < nums.length && nums[i] <= miss){
+             miss += nums[i]
+             i += 1
+         } else {
+             miss += miss
+             result += 1
+
+         }
+     }
+
+     return result
+};
+
+console.log(minPatchesBetter([1,2,31,33] , 100))
+console.log(minPatchesBetter([1,2,31,33] , 2147483647))
