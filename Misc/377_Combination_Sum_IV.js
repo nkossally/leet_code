@@ -3,6 +3,28 @@
  * @param {number} target
  * @return {number}
  */
+var combinationSum4 = function (nums, target) {
+    const dp = [1]
+    const numsSet = new Set(nums)
+
+    for(i = 1; i <= target; i++){
+        dp[i] = 0;
+        for(let j = 0; j < i; j++){
+            const diff = i - j;
+            if(numsSet.has(diff)){
+                dp[i] += dp[j]
+            }
+        }
+    }
+
+    return dp[target]
+};
+
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
 var combinationSum4_v1 = function (nums, target) {
 
     const mem = {}
