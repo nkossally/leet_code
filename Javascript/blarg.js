@@ -136,3 +136,18 @@ console.log(c === e)
 
 const strFromCharCode = String.fromCharCode(97, 98, 99);
 console.log(strFromCharCode)
+
+
+
+let m = 0;
+let n = 0;
+
+while(m <  20){
+  while(n < 10){
+    console.log("m",m, "n", n)
+    if(n === 8) break
+    n++
+  }
+  console.log("m", m)
+  m++
+}

@@ -13,7 +13,7 @@
 //     console.log("This is in the catch " + message)
 // })
 
-const userLeft = false;
+const userLeft = true;
 const userWatchingCatMeme = false;
 
 // function watchTutorialCallback(callback, errorCallback) {
@@ -49,28 +49,28 @@ function watchTutorialPromise() {
         message: "like cats",
       });
     } else {
-      return resolve({ name: "Hey it worked", message: "ello" });
+      resolve({ name: "Hey it worked", message: "ello" });
     }
   });
 }
 
-// watchTutorialPromise()
-//   .then((message) => console.log("meow", message))
-//   .catch((error) => {
-//     console.log(error.name + " " + error.message);
-//   });
+watchTutorialPromise()
+  .then((message) => console.log("meow", message))
+  .catch((error) => {
+    console.log(error.name + " " + error.message);
+  });
 
-const recordVideo1 = new Promise((resolve, reject) => {
-  resolve("Video 1 recorded");
-});
+// const recordVideo1 = new Promise((resolve, reject) => {
+//   resolve("Video 1 recorded");
+// });
 
-const recordVideo2 = new Promise((resolve, reject) => {
-  resolve("Video 2 recorded");
-});
+// const recordVideo2 = new Promise((resolve, reject) => {
+//   resolve("Video 2 recorded");
+// });
 
-const recordVideo3 = new Promise((resolve, reject) => {
-  resolve("Video 3 recorded");
-});
+// const recordVideo3 = new Promise((resolve, reject) => {
+//   resolve("Video 3 recorded");
+// });
 
 // Promise.all([
 //     recordVideo1,
@@ -108,38 +108,38 @@ const recordVideo3 = new Promise((resolve, reject) => {
 //     );
 //   });
 
-const myPromise = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve("foo");
-  }, 300);
-});
+// const myPromise = new Promise((resolve, reject) => {
+//   setTimeout(() => {
+//     resolve("foo");
+//   }, 300);
+// });
 
-const aThenable = {
-  then(onFulfilled, onRejected) {
-    onFulfilled({
-      // The thenable is fulfilled with another thenable
-      then(onFulfilled, onRejected) {
-        onFulfilled(console.log(42));
-      },
-    });
-  },
-};
+// const aThenable = {
+//   then(onFulfilled, onRejected) {
+//     onFulfilled({
+//       // The thenable is fulfilled with another thenable
+//       then(onFulfilled, onRejected) {
+//         onFulfilled(console.log(42));
+//       },
+//     });
+//   },
+// };
 
 // Promise.resolve(aThenable); // A promise fulfilled with 42
 
-const promiseWrapper = () => {
-  const rand = Math.floor(100 * Math.random());
-  console.log(rand);
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (rand % 2 === 0) {
-        resolve("It's even!");
-      } else {
-        reject("It's odd");
-      }
-    }, 1000);
-  });
-};
+// const promiseWrapper = () => {
+//   const rand = Math.floor(100 * Math.random());
+//   console.log(rand);
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       if (rand % 2 === 0) {
+//         resolve("It's even!");
+//       } else {
+//         reject("It's odd");
+//       }
+//     }, 1000);
+//   });
+// };
 
 // promiseWrapper()
 //   .then((message) => {
@@ -149,57 +149,75 @@ const promiseWrapper = () => {
 //     console.log("oh no!" + " " + err);
 //   });
 
-const wrapAroundTheWrap = async () => {
-  try {
-    const result = await promiseWrapper();
-    console.log("the success message is " + result);
-  } catch (err) {
-    console.log("the error is " + err);
-  }
-};
+// const wrapAroundTheWrap = async () => {
+//   try {
+//     const result = await promiseWrapper();
+//     console.log("the success message is " + result);
+//   } catch (err) {
+//     console.log("the error is " + err);
+//   }
+// };
 
 // wrapAroundTheWrap();
 
+// const resolvedPromise = new Promise((resolve, reject) =>{
+//   resolve("it worked!")
+// })
 
-const resolvedPromise = new Promise((resolve, reject) =>{
-  resolve("it worked!")
-})
+// const rejecteddPromise = new Promise((resolve, reject) =>{
+//   reject("it did not work!")
+// })
 
-const rejecteddPromise = new Promise((resolve, reject) =>{
-  reject("it did not work!")
-})
+// const rejecteddPromise2 = new Promise((resolve, reject) =>{
+//   reject("the second did not work!")
+// })
 
-const rejecteddPromise2 = new Promise((resolve, reject) =>{
-  reject("the second did not work!")
-})
+// Promise.race([
+//   rejecteddPromise2,
+//   rejecteddPromise,
+//   resolvedPromise,
+// ]).then(message =>{
+//   console.log(message)
+// }).catch(err =>{
+//   console.log(err)
+// })
 
-Promise.race([
-  rejecteddPromise2,
-  rejecteddPromise,
-  resolvedPromise,
-]).then(message =>{
-  console.log(message)
-}).catch(err =>{
-  console.log(err)
-})
+// Promise.all([
+//   rejecteddPromise2,
+//   resolvedPromise,
+//   rejecteddPromise
+// ]).then(message =>{
+//   console.log(message)
+// }).catch(err =>{
+//   console.log(err)
+// })
 
-Promise.all([
-  rejecteddPromise2,
-  resolvedPromise,
-  rejecteddPromise
-]).then(message =>{
-  console.log(message)
-}).catch(err =>{
-  console.log(err)
-})
+// Promise.any([
+//   rejecteddPromise2,
+//   resolvedPromise,
+//   rejecteddPromise
+// ]).then(message =>{
+//   console.log(message)
+// }).catch(err =>{
+//   console.log(err)
+// })
 
+const slowPromise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("slow promise resolved");
+  }, 2000);
+});
 
-Promise.any([
-  rejecteddPromise2,
-  resolvedPromise,
-  rejecteddPromise
-]).then(message =>{
-  console.log(message)
-}).catch(err =>{
-  console.log(err)
-})
+const fastPromise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("fast promise resolved");
+  }, 1000);
+});
+
+Promise.all([fastPromise, slowPromise])
+  .then((message) => {
+    console.log(message);
+  })
+  .catch((err) => {
+    console.log("error is " + err);
+  });
