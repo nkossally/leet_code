@@ -51,7 +51,6 @@ const countDivisibleSubarraysV3 = (inp, divisor) => {
   let count = 0;
 
   for (let i = 0; i < inp.length; i++) {
-    if (inp[i] % divisor === 0) count++;
     sum += inp[i];
     // handle negative nums
     sum = (sum + divisor) % divisor;
@@ -61,6 +60,7 @@ const countDivisibleSubarraysV3 = (inp, divisor) => {
 
   Object.keys(numToCount).forEach((num) => {
     const parsedNum = parseInt(num);
+    if(parsedNum === 0) count += numToCount[num]
     const numCount = numToCount[num];
     count += (numCount * (numCount - 1)) / 2;
   });
