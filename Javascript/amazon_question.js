@@ -32,7 +32,8 @@ const countDivisibleSubarraysV2 = (inp, divisor) => {
     for (let i = 0; i < inp.length; i++) {
       sum += inp[i];
       // handle negative nums
-      sum = (sum + divisor) % divisor;
+      sum = sum % divisor;
+    //   sum = (sum + divi)
       if (!numToCount[sum]) numToCount[sum] = 0;
       numToCount[sum]++;
       count += numToCount[sum] - 1;
