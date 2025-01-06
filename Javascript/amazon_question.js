@@ -3,17 +3,16 @@ const inputArr = [-3, -4, 9, 3, -6, 2, 0, 5, 2, 7];
 
 const divisor = 7;
 
-
 const ITERATION_COUNT = 1000;
 
 // # O(1 + 2 + .. + n) ~ O(n*n)
 const countDivisibleSubarrays = (inp, divisor) => {
-  const working = []
+  const working = [];
 
   let count = 0;
 
   for (let i = 0; i < inp.length; i++) {
-    working[i] = 0
+    working[i] = 0;
     for (let j = 0; j <= i; j++) {
       working[j] = (inp[i] + working[j]) % divisor;
       if (working[j] === 0) {
@@ -25,26 +24,26 @@ const countDivisibleSubarrays = (inp, divisor) => {
 };
 
 const countDivisibleSubarraysV2 = (inp, divisor) => {
-    const numToCount = {};
-    let sum = 0;
-    let count = 0;
-  
-    for (let i = 0; i < inp.length; i++) {
-      sum += inp[i];
-      // handle negative nums
-      sum = sum % divisor;
+  const numToCount = {};
+  let sum = 0;
+  let count = 0;
+
+  for (let i = 0; i < inp.length; i++) {
+    sum += inp[i];
+    // handle negative nums
+    sum = ((sum % divisor) + divisor) % divisor;
     //   sum = (sum + divi)
-      if (!numToCount[sum]) numToCount[sum] = 0;
-      numToCount[sum]++;
-      count += numToCount[sum] - 1;
-      if (sum === 0) {
-        // handle from beginning to input at i
-        count++;
-      }
+    if (!numToCount[sum]) numToCount[sum] = 0;
+    numToCount[sum]++;
+    count += numToCount[sum] - 1;
+    if (sum === 0) {
+      // handle from beginning to input at i
+      count++;
     }
-  
-    return count;
-  };
+  }
+
+  return count;
+};
 
 const countDivisibleSubarraysV3 = (inp, divisor) => {
   const numToCount = {};
@@ -54,14 +53,14 @@ const countDivisibleSubarraysV3 = (inp, divisor) => {
   for (let i = 0; i < inp.length; i++) {
     sum += inp[i];
     // handle negative nums
-    sum = (sum + divisor) % divisor;
+    sum = ((sum % divisor) + divisor) % divisor;
     if (!numToCount[sum]) numToCount[sum] = 0;
     numToCount[sum]++;
   }
 
   Object.keys(numToCount).forEach((num) => {
     const parsedNum = parseInt(num);
-    if(parsedNum === 0) count += numToCount[num]
+    if (parsedNum === 0) count += numToCount[num];
     const numCount = numToCount[num];
     count += (numCount * (numCount - 1)) / 2;
   });
@@ -82,6 +81,31 @@ const testFunction = (fn) => {
   console.log(end - start, ans);
 };
 
+const countDivisibleSubarraysV4 = (inp, divisor) => {
+  const numToCount = {};
+  let sum = 0;
+  let count = 0;
+
+  numToCount[0] = 1;
+
+  for (let i = 0; i < inp.length; i++) {
+    sum += inp[i];
+
+    // handle negative nums
+    sum = ((sum % divisor) + divisor) % divisor;
+
+    if (!numToCount[sum]) {
+      numToCount[sum] = 0;
+    }
+    numToCount[sum]++
+
+  }
+
+  return count;
+
+};
+
 testFunction(countDivisibleSubarrays);
 testFunction(countDivisibleSubarraysV2);
 testFunction(countDivisibleSubarraysV3);
+testFunction(countDivisibleSubarraysV4);
