@@ -14,7 +14,9 @@ class Animal {
     breed: string;
   
     constructor(name: string, breed: string) {
-      super(name); // Call the constructor of the base class
+      // super(name)
+      super("I am an animal")
+      // this.name = "I am a dog"
       this.breed = breed;
     }
   
