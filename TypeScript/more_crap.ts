@@ -30,3 +30,39 @@ class Animal {
   console.log(dog.breed); // Output: Golden Retriever
   dog.makeSound(); // Output: Woof!
   dog.makeSound(); // Output: Generic animal sound
+
+
+  enum CardinalDirections {
+    North = 1,
+    East = 2,
+    South = 3,
+    West = 4
+  }
+  
+  const pizza : CardinalDirections = CardinalDirections.North
+
+  interface Point {
+    x: number;
+    y: number;
+  }
+  
+  interface SetPoint {
+    (x: number, y: number): void;
+  }
+
+  type Pointy = {
+    x: number;
+    y: number;
+  };
+
+
+
+  // enums
+
+  // class inheiritance
+
+  enum ConstraintTypes {
+    DISTANCE = "DISTANCE",
+    WEATHER = "WEATHER",
+  }
+  

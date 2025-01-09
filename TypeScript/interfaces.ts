@@ -1,30 +1,9 @@
-interface Point {
-    x: number;
-    y: number;
-  }
-  
-  interface SetPoint {
-    (x: number, y: number): void;
-  }
-
-  type Pointy = {
-    x: number;
-    y: number;
-  };
-  
-
-  // enums
-
-  // class inheiritance
-
-interface ValidDistributionCenterRequest {
+interface GetDistributionCenterRequest {
     distributionCenterId: string;
-    clusterIds: string;
-    distance: number;
+    constraints: Constraints;
 }
 
-
-interface ValidDistributionCenterResponse {
+interface GetDistributionCenterResponse {
     distributionCenter: string;
     distributionCenters: DistributionCenter[];
 }
@@ -35,20 +14,45 @@ interface DistributionCenter {
     longitude: string;
 }
 
+type Constraints = {
+  distance: number | undefined;
+  weather: string| undefined;
+}
+
+class DistributionCenterFinderService {
+
+  
+  
+  getDistributionCenters = () => {
+
+  }
+}
+
+class DataBaseInterface {
+  
+  getNearbyDistributionCenters = (request) =>{
+
+  }
+
+  getDistributionCenterBucketsFromCoordinates = (latitude, longitude) =>{
+
+  }
+
+  getDistributionCentersFromBucket = (bucketId) =>{
+
+  }
+}
 
 
-class HandleRequest   {
-    request: ValidDistributionCenterRequest;
+class FilterDistribution   {
 
-    constructor(request: ValidDistributionCenterRequest){
-        this.request = request
+    filterDistributionCentersByWeather = (centers, weatherConstraint) => {
+
+      
     }
 
-    // this.getDistributionCentersInCluster 
-
-    // filterByDistance
-  
-
-
-
 }
+
+
+/// service, request and response for each method, 3) database
+// exceptional (invalid longitude)
