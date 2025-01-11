@@ -18,12 +18,15 @@ type Constraints = {
   distance: number | undefined;
   weather: string| undefined;
 }
-
+  
 class DistributionCenterFinderService {
 
   
   
   getDistributionCenters = () => {
+    const filterDistribution   = new FilterDistribution()
+    filterDistribution.filterDistributionCentersByWeather();
+
 
   }
 }
