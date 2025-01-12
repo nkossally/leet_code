@@ -31,6 +31,10 @@ class ParkingLotService implements ParkingLot {
   constructor() {}
 
   parkCar = (size: CarSize, licensePlate: string): boolean => {
+    if(this.licenseToParkingSpot[licensePlate] ){
+      return false
+    }
+
     if (size === CarSize.Small) {
       const parkingSpot = this.getSmallSpot();
       if (parkingSpot) {
@@ -174,8 +178,7 @@ class ParkingSpotService implements ParkingSpot {
 
 const parkingLot = new ParkingLotService();
 parkingLot.addParkingSpots(CarSize.Small, 3);
-// parkingLot.addParkingSpots(CarSize.Medium, 3);
-// parkingLot.addParkingSpots(CarSize.Large, 3);
+
 
 parkingLot.parkCar(CarSize.Small, "nina");
 parkingLot.print();
