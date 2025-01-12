@@ -1,130 +1,184 @@
+type licenseToParkingSpot = {
+  [key: string]: ParkingSpot;
+};
 interface ParkingLot {
-    parkCar: (size: CarSize, licensePlate: string) => boolean
-    unparkCar: (licensePlate: string) => void
-    addParkingSpot: (size: CarSize) => void;
- 
-    availableSmallSpots: ParkingSpot[];
-    availableMediumSpots: ParkingSpot[];
-    availableLargeSpots: ParkingSpot[];
-    licenseToParkingSpot: {liscense: string, parkingSpot: ParkingSpot};
+  parkCar: (size: CarSize, licensePlate: string) => boolean;
+  unparkCar: (licensePlate: string) => void;
+  addParkingSpot: (size: CarSize) => void;
 
+  availableSmallSpots: ParkingSpot[];
+  availableMediumSpots: ParkingSpot[];
+  availableLargeSpots: ParkingSpot[];
+  licenseToParkingSpot: licenseToParkingSpot;
 }
 
 interface ParkingSpot {
-    size: CarSize
-    licensePlate: string;
+  size: CarSize | undefined;
 }
 
 enum CarSize {
-    Small = 1,
-    Medium = 2,
-    Large = 3 
+  Small = 1,
+  Medium = 2,
+  Large = 3,
 }
-
 
 class ParkingLotService implements ParkingLot {
-    availableSmallSpots;
-    availableMediumSpots;
-    availableLargeSpots;
-    licenseToParkingSpot;
+  availableSmallSpots: ParkingSpot[] = [];
+  availableMediumSpots: ParkingSpot[] = [];
+  availableLargeSpots: ParkingSpot[] = [];
+  licenseToParkingSpot: licenseToParkingSpot = {};
 
-    constructor(){
-        this.availableLargeSpots = []
-        this.availableMediumSpots = []
-        this.availableSmallSpots = []
-        this.licenseToParkingSpot = {}
+  constructor() {}
+
+  parkCar = (size: CarSize, licensePlate: string): boolean => {
+    if (size === CarSize.Small) {
+      const parkingSpot = this.getSmallSpot();
+      if (parkingSpot) {
+        this.licenseToParkingSpot[licensePlate] = parkingSpot;
+        return true;
+      }
+    }
+    if (size === CarSize.Small || size === CarSize.Medium) {
+      const parkingSpot = this.getMediumSpot();
+      if (parkingSpot) {
+        this.licenseToParkingSpot[licensePlate] = parkingSpot;
+        return true;
+      }
+    }
+    const parkingSpot = this.getLargeSpot();
+    if (parkingSpot) {
+      this.licenseToParkingSpot[licensePlate] = parkingSpot;
+      return true;
     }
 
+    return false;
+  };
 
-    parkCar =  (size: CarSize, licensePlate: string): boolean => {
-        let foundParkingSpot
-        if(size === CarSize.Small){
-            const parkingSpot = this.getSmallSpot()
-            if(parkingSpot){
-                foundParkingSpot = parkingSpot
+  unparkCar = (licensePlate: string) => {
+    const parkingSpot: ParkingSpot | undefined =
+      this.licenseToParkingSpot[licensePlate];
+    if (parkingSpot) {
+      const size = parkingSpot.size;
+      delete this.licenseToParkingSpot[licensePlate];
+      console.log("unparking", licensePlate, "size", size);
+      if (size === CarSize.Large) {
+        this.availableLargeSpots.push(parkingSpot);
+        return true;
+      } else if (size === CarSize.Medium) {
+        this.availableMediumSpots.push(parkingSpot);
+        return true;
+      } else if (size === CarSize.Small) {
+        this.availableSmallSpots.push(parkingSpot);
+        return true;
+      }
+    }
+    return false;
+  };
 
-            }
-        }
-        if(!foundParkingSpot && (size === CarSize.Small || size === CarSize.Medium)){
-            const parkingSpot = this.getMediumSpot()
-            if(parkingSpot){
-                foundParkingSpot = parkingSpot
+  addParkingSpot = (size: CarSize) => {
+    const parkingSpot: ParkingSpot = new ParkingSpotService(size);
 
-            }
-        }
-        if(!foundParkingSpot && size === CarSize.Large){
-            const parkingSpot = this.getLargeSpot()
-            if(parkingSpot){
-                foundParkingSpot = parkingSpot
-            }
-        }
-        if(foundParkingSpot){
-            foundParkingSpot.parkCar(licensePlate)
-            this.licenseToParkingSpot[licensePlate] = foundParkingSpot
-            return true
-        }
-        return false
+    if (size === CarSize.Large) {
+      this.availableLargeSpots.push(parkingSpot);
+    }
+    if (size === CarSize.Medium) {
+      this.availableMediumSpots.push(parkingSpot);
+    }
+    if (size === CarSize.Small) {
+      this.availableSmallSpots.push(parkingSpot);
+    }
+  };
+
+  addParkingSpots = (size: CarSize, num: number) => {
+    for (let i = 0; i < num; i++) {
+      this.addParkingSpot(size);
+    }
+  };
+
+  getLargeSpot = (): ParkingSpot | null => {
+    if (this.availableLargeSpots.length > 0) {
+      const parkingSpot =
+        this.availableLargeSpots[this.availableLargeSpots.length - 1];
+      this.availableLargeSpots.pop();
+      return parkingSpot;
     }
 
-    unparkCar = (licensePlate: string) => {
-        const parkingSpot = this.
+    return null;
+  };
+
+  getMediumSpot = (): ParkingSpot | null => {
+    if (this.availableMediumSpots.length > 0) {
+      const parkingSpot =
+        this.availableMediumSpots[this.availableMediumSpots.length - 1];
+      this.availableMediumSpots.pop();
+      return parkingSpot;
     }
 
-    addParkingSpot =  (size: CarSize) => {
-        const parkingSpot = new ParkingSpotService(size)
+    return null;
+  };
 
-        if(size === CarSize.Large){
-            this.availableLargeSpots.push(parkingSpot)
-        }
-        if(size === CarSize.Medium){
-            this.availableMediumSpots.push(parkingSpot)
-        }
-        if(size === CarSize.Small){
-            this.availableSmallSpots.push(parkingSpot)
-        }
+  getSmallSpot = (): ParkingSpot | null => {
+    if (this.availableSmallSpots.length > 0) {
+      const parkingSpot =
+        this.availableSmallSpots[this.availableSmallSpots.length - 1];
+      this.availableSmallSpots.pop();
+      return parkingSpot;
     }
 
-    getLargeSpot = () =>{
-        if(this.availableLargeSpots.length > 0){
-            return this.availableLargeSpots.pop()
-        }
+    return null;
+  };
 
-        return null
+  print = () => {
+    console.log("large spots");
+    let str = "";
+    for (let i = 0; i < this.availableLargeSpots.length; i++) {
+      const parkingSpot: ParkingSpot = this.availableLargeSpots[i];
+      str += parkingSpot.toString();
     }
-
-    getMediumSpot = () =>{
-        if(this.availableMediumSpots.length > 0){
-            return this.availableMediumSpots.pop()
-        }
-
-        return null
+    console.log(str);
+    console.log("medium spots");
+    str = "";
+    for (let i = 0; i < this.availableMediumSpots.length; i++) {
+      const parkingSpot: ParkingSpot = this.availableMediumSpots[i];
+      str += parkingSpot.toString();
     }
-
-    getSmallSpot = (): ParkingSpot | null =>{
-        if(this.availableSmallSpots.length > 0){
-            return this.availableSmallSpots.pop()
-        }
-
-        return null
+    console.log(str);
+    console.log("small spots");
+    str = "";
+    for (let i = 0; i < this.availableSmallSpots.length; i++) {
+      const parkingSpot: ParkingSpot = this.availableSmallSpots[i];
+      str += parkingSpot.toString();
     }
+    console.log(str);
+
+    Object.keys(this.licenseToParkingSpot).forEach((key) => {
+      console.log(key, this.licenseToParkingSpot[key]);
+    });
+  };
 }
-
 
 class ParkingSpotService implements ParkingSpot {
-    size;
-    licensePlate;
+  size;
 
+  constructor(carSize: CarSize) {
+    this.size = carSize;
+  }
 
-    constructor(carSize: CarSize){
-        this.size = carSize
-        this.licensePlate = ""
-    }
-
-    parkCar = (licensePlate: string) =>{
-        this.licensePlate = licensePlate;
-    }
-
-    unParkCar = () =>{
-        this.licensePlate = ""
-    }
+  toString = () => {
+    return `-${this.size}-`;
+  };
 }
+
+const parkingLot = new ParkingLotService();
+parkingLot.addParkingSpots(CarSize.Small, 3);
+parkingLot.addParkingSpots(CarSize.Medium, 3);
+parkingLot.addParkingSpots(CarSize.Large, 3);
+
+parkingLot.parkCar(CarSize.Small, "nina");
+parkingLot.print();
+parkingLot.parkCar(CarSize.Small, "bonina");
+parkingLot.print();
+parkingLot.parkCar(CarSize.Small, "brown");
+parkingLot.print();
+parkingLot.parkCar(CarSize.Small, "cow");
+parkingLot.print();
