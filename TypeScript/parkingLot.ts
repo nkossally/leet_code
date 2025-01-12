@@ -51,6 +51,8 @@ class ParkingLotService implements ParkingLot {
       return true;
     }
 
+    console.log("can't park it bitch")
+
     return false;
   };
 
@@ -151,8 +153,9 @@ class ParkingLotService implements ParkingLot {
     }
     console.log(str);
 
+    console.log("parked cars")
     Object.keys(this.licenseToParkingSpot).forEach((key) => {
-      console.log(key, this.licenseToParkingSpot[key]);
+      console.log(key, this.licenseToParkingSpot[key].toString());
     });
   };
 }
@@ -171,14 +174,18 @@ class ParkingSpotService implements ParkingSpot {
 
 const parkingLot = new ParkingLotService();
 parkingLot.addParkingSpots(CarSize.Small, 3);
-parkingLot.addParkingSpots(CarSize.Medium, 3);
-parkingLot.addParkingSpots(CarSize.Large, 3);
+// parkingLot.addParkingSpots(CarSize.Medium, 3);
+// parkingLot.addParkingSpots(CarSize.Large, 3);
 
 parkingLot.parkCar(CarSize.Small, "nina");
 parkingLot.print();
 parkingLot.parkCar(CarSize.Small, "bonina");
 parkingLot.print();
 parkingLot.parkCar(CarSize.Small, "brown");
+parkingLot.print();
+parkingLot.parkCar(CarSize.Small, "cow");
+parkingLot.print();
+parkingLot.unparkCar( "bonina");
 parkingLot.print();
 parkingLot.parkCar(CarSize.Small, "cow");
 parkingLot.print();
