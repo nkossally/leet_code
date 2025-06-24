@@ -13,19 +13,16 @@ class Solution(object):
         maxes = []
         curr_min = float("inf")
         curr_max = float("-inf")
-        for i in range(len(nums) - 1, -1, -1):
+        for i in range(len(nums) - 1, m - 2, -1):
             curr_min = min(curr_min, nums[i])
             curr_max = max(curr_max, nums[i])
             mins.insert(0, curr_min)
             maxes.insert(0, curr_max)
-
-        for i in range(0, len(nums) - m + 1):
-            j = i + m - 1
-            prod = nums[i] * maxes[j]
+            
+            j = i - m + 1
+            prod = nums[j] * maxes[0]
             result = max(result, prod)
-          
-            j = i + m - 1
-            prod = nums[i] * mins[j]
+                  
+            prod = nums[j] * mins[0]
             result = max(result, prod)
-     
-        return result
+            
