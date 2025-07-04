@@ -26,7 +26,7 @@ class Solution(object):
         is_occupied_arr = [False for _ in range(x)]
         return helper(0, is_occupied_arr, 0)
     
-    class Solution:
+class Solution:
     def numberOfWays_2(self, n: int, x: int, y: int) -> int:
         
         mod = 10 ** 9 + 7
