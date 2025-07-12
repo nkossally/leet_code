@@ -18,3 +18,17 @@ class Solution:
             max_count= max([max_count, count_1, count_2])
 
         return max_count
+
+    def maxSelectedElementsFast(self, nums: List[int]) -> int:
+        nums.sort()
+        dp ={}
+
+        for num in nums:
+            if num not in dp:
+                dp[num] = 0
+            if num - 1 not in dp:
+                dp[num - 1] = 0
+            dp[num + 1] = dp[num ] + 1
+            dp[num] = dp[num - 1] + 1
+
+        return max(dp.values())
