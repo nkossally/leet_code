@@ -118,7 +118,59 @@ class Solution:
         # print("valid_sets", valid_sets)
         return len(valid_sets)
 
+class Solution:
+    def numberOfSets(self, n: int, maxDistance: int, roads: List[List[int]]) -> int:
 
+        valid_sets = []
+
+        def evaluate_set( removed):
+            max_min_dist = float("-inf")
+
+            dists = [[float("inf") for _ in range(n)] for _ in range(n)]
+
+            for road in roads:
+                i, j, w = road
+                if i in removed or j in removed:
+                    continue
+                dists[i][j] = min( dists[i][j], w)
+                dists[j][i] = min( dists[j][i], w)
+           
+            for i in range(n):
+                dists[i][i] = 0
+
+            for i in range(n):
+                if i in removed:
+                    continue
+                for j in range(n):
+                    if j in removed:
+                        continue
+                    for k in range(n):
+                        if k in removed:
+                            continue
+                        val = dists[i][k] + dists[k][j]
+                        min_dist = min(dists[i][j], val)
+                        dists[i][j] = min_dist
+                    if dists[i][j] > maxDistance:
+                        return
+            valid_sets.append(removed)
+
+
+        def get_valid_sets(idx, removed):
+            if idx == n:
+                evaluate_set(removed)
+                return
+            
+            cpy = set(list(removed))
+            cpy.add(idx)
+            get_valid_sets(idx + 1, removed)
+            get_valid_sets(idx + 1, cpy)
+        
+        get_valid_sets(0, set())
+        return len(valid_sets)
+
+
+
+    
 
     
     
