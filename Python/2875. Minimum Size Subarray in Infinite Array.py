@@ -24,3 +24,27 @@ class Solution:
 
         
         return total if total != float("inf") else -1
+
+    def minSizeSubarrayFast(self, nums: List[int], target: int) -> int:
+        arr_sum = sum(nums)
+        multiple_count = floor(target / arr_sum) * len(nums)
+        remainder = target % arr_sum
+        if remainder == 0:
+            return multiple_count
+
+        dp = {0 : - 1}
+        curr_sum = 0
+        min_dist = float("inf")
+        # cover loop around sums by iterating through array twice
+        double_arr = nums + nums
+        for i, num in enumerate(double_arr):
+            curr_sum += num
+            diff = curr_sum - remainder 
+            if diff in dp:
+                prev_idx = dp[diff]
+                min_dist = min(min_dist, i - prev_idx)
+            dp[curr_sum] = i
+        
+        total =  min_dist + multiple_count
+        
+        return total if total != float("inf") else -1
