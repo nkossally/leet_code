@@ -11,6 +11,9 @@ class Solution:
         def recur(diffs):
             if len(diffs) == 0:
                 return 0
+            diff_str = str(diffs)
+            if diff_str in dp:
+                return dp[diff_str]
 
             min_count = float("inf")
 
@@ -21,6 +24,7 @@ class Solution:
                     diffs_cpy.pop(j)
                     diffs_cpy.pop(i)
                     min_count = min(min_count, cost + recur(diffs_cpy))
+            dp[diff_str] = min_count
             return min_count
         res = recur(diffs)
         return res 
