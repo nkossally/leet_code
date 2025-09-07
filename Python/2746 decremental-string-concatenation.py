@@ -1,6 +1,56 @@
 import copy
 
+
 class Solution:
+    def minimizeConcatenatedLength(self, words: List[str]) -> int:
+        prev_words = [[words[0][0] + words[0][-1], len(words[0])]]
+
+        def join_words(word_1, word_2):
+            len_1 = word_1[1]
+            len_2 = word_2[1]
+            possibilities = []
+            if word_1[0][-1] == word_2[0][0]:
+                possibilities.append([word_1[0][0] + word_2[0][1], len_1 + len_2 -1])
+            else:
+                possibilities.append([word_1[0][0] + word_2[0][1], len_1 + len_2])
+
+            if word_2[0][-1] == word_1[0][0]:
+                possibilities.append([word_2[0][0] + word_1[0][1], len_1 + len_2 -1])
+            else:
+                possibilities.append([word_2[0][0] + word_1[0][1], len_1 + len_2])
+
+            return possibilities
+        
+        def select_words(words):
+            selected_set = {}
+            for word in words:
+                string, length = word
+                if string in selected_set:
+                    selected_set[string] = min(length, selected_set[string])
+                else:
+                    selected_set[string] = length
+            selected_arr = []
+            for key, val in selected_set.items():
+                selected_arr.append([key, val])
+            return selected_arr
+            
+
+        for i in range(1, len(words)):
+            new_prev_words = []
+            for word in prev_words:
+                joins = join_words(word, [words[i][0] + words[i][-1], len(words[i])])
+                new_prev_words += joins
+            new_prev_words.sort(key=lambda x : x[1])
+            selected = []
+            best_len = new_prev_words[0][1]
+            for prev_word in new_prev_words:
+                if prev_word[1] - best_len <= 1:
+                    selected.append(prev_word)
+            prev_words = select_words(selected)
+
+
+        return prev_words[0][1]
+
     def minimizeConcatenatedLengthMisunderstood(self, words: List[str]) -> int:
         total_count = 0
         for word in words:
