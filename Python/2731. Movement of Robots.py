@@ -117,6 +117,8 @@ class Solution:
             for j in range(i + 1, len(nums)):
                 res += abs(nums[i] - nums[j])
         return get_mod(res)
+    
+
             
         
         
