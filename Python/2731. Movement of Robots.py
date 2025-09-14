@@ -121,4 +121,23 @@ class Solution:
 
             
         
+    def sumDistanceFastest(self, nums: List[int], s: str, d: int) -> int:
+        def get_mod(num):
+            return num % (10 ** 9 + 7)
+
+        for i in range(len(nums)):
+            if s[i] == "R":
+                nums[i] += d
+            else:
+                nums[i] -= d
+        nums.sort()
+        prev = 0
+        res = 0        
+        for i in range(1, len(nums)):
+            diff = nums[i] - nums[i - 1]
+            new_prev = prev + i * diff
+            res += new_prev
+            prev = new_prev
+        return get_mod(res)
+            
         
