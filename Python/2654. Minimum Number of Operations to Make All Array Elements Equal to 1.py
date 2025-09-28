@@ -72,5 +72,23 @@ class Solution:
         return self.res
         
 
+    def minOperationsFast(self, nums: List[int]) -> int:
+        n = len(nums)
+        counter = Counter(nums)
+        one_count = counter[1]
+        if one_count != 0:
+            return n - one_count
+        res= float("inf")     
+        for i in range(n):
+            g = nums[i]
+            for j in range(i + 1, n):
+                g = gcd(g, nums[j])
+                if g == 1:
+                    res = min(res,j-i+(n-1)) # number of operations to make this element 1+ number of non ones (i.e. n-1) .
+                    break
+  
+        if res == float("inf"):
+            return - 1
+        return res
 
         
