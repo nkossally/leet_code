@@ -84,3 +84,10 @@ class Solution:
 
         return 2 ** len(curr_ranges) % (10 **9 + 7)
 
+    def countWaysFastest(self, ranges: List[List[int]]) -> int:
+        rightmost_edge = -1
+        group_count = 0
+        for a,b in sorted(ranges):
+            group_count += rightmost_edge < a
+            rightmost_edge = max(rightmost_edge, b)
+        return pow(2, group_count, 10**9+7)
