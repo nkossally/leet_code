@@ -18,3 +18,11 @@ class Solution:
             total += 4*(i - 1)
 
         return total
+
+    def coloredCells_fastest(self, n: int) -> int:
+        if n == 1:
+            return 1
+        # arithmetic sequence from i = 2 to n plus 1, where each term is 4*(i - 1)
+        total = 4*(n - 1 + 1)*((n - 1)/ 2) + 1
+
+        return int(total)
