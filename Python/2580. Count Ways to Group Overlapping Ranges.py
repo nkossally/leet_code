@@ -84,6 +84,44 @@ class Solution:
 
         return 2 ** len(curr_ranges) % (10 **9 + 7)
 
+    def countWaysCleaner(self, ranges: List[List[int]]) -> int:
+        ranges.sort(key=lambda x:x[0])
+
+        def combine(a, b):
+            if not a:
+                return b
+            if not b:
+                return a
+            return [min(a[0], b[0]), max(a[1], b[1])]
+
+        def ranges_overlap(a, b):
+            if not a:
+                return False
+            if not b:
+                return False
+            return (b[0] >= a[0] and b[0] <= a[1]) or (a[0] >= b[0] and a[0] <= b[1])
+
+        curr_ranges = ranges
+
+        new_ranges = [curr_ranges[0]]
+        idx = 1
+        right_idx = 0
+        right = curr_ranges[0]
+        while idx < len(curr_ranges):
+            range_1 = curr_ranges[idx]
+            if ranges_overlap(right, range_1):
+                new_range = combine(range_1, right)
+                new_ranges[right_idx] = new_range
+                right = new_range
+            else:
+                if range_1[1] > right[1]:
+                    right_idx = len(new_ranges)
+                    right = range_1
+                new_ranges.append(range_1)
+            idx += 1
+        curr_ranges = new_ranges
+
+        return 2 ** len(curr_ranges) % (10 **9 + 7)
     def countWaysFastest(self, ranges: List[List[int]]) -> int:
         rightmost_edge = -1
         group_count = 0
