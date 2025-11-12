@@ -15,3 +15,40 @@ class Solution:
                 if 0 <= r < m and 0 <= c < n and (r, c) not in visited:
                     wait = 1 if ((grid[r][c] - time) % 2 == 0) else 0
                     heappush(pq, (max(time + 1, grid[r][c] + wait), r, c))
+            
+    def minimumTimeSlow(self, grid: List[List[int]]) -> int:
+        if grid[0][1] > 1 and grid[1][0] > 1:
+            return -1
+        
+        time = 0
+        queue = []
+        heapq.heappush(queue, [grid[1][0], 1, 0])
+        heapq.heappush(queue, [grid[0][1], 0, 1])
+
+        dirs = [[0, 1], [1, 0]]
+
+        def is_on_board(x, y):
+            return x < len(grid) and y < len(grid[0])
+        
+        while queue:
+            new_queue = []
+            while queue:
+                priority, x, y = heapq.heappop(queue)
+                available = time + 1
+                if time + 1 < priority:
+                    diff = priority - time - 1
+                    if diff % 2 == 1:
+                        available = priority + 1 
+                    else:
+                        available = priority             
+                if x == len(grid) - 1 and y == len(grid[0]) -1:
+                    return available
+                
+                for dir in dirs:
+                    x_2 = x + dir[0]
+                    y_2 = y + dir[1]
+                    if is_on_board(x_2, y_2):
+                        heapq.heappush(new_queue, [grid[x_2][y_2], x_2, y_2])
+            time += 1
+            queue = new_queue
+                
