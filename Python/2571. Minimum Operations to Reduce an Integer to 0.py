@@ -20,4 +20,20 @@ class Solution:
         recur(0, 0)
 
         return self.res
+    
+
+
+
+    def minOperationsFast( self, n: int) -> int:
+        res = 0
+        while n > 0:
+            if n % 2 == 0:
+                n >>= 1
+            elif (n & 2) > 0:
+                n += 1
+                res += 1
+            else:
+                res += 1
+                n >>= 2
+        return res
             
