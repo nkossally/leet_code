@@ -76,3 +76,4 @@ class Solution:
     
 Solution().squareFreeSubsetsFast([1, 1, 3, 3])
 Solution().squareFreeSubsets([1, 1, 3, 3])
+print(0 | 3, 0 | 5, 3 | 5)
