@@ -28,8 +28,23 @@ class Solution:
     def squareFreeSubsetsFast(self, nums: List[int]) -> int:
         def get_mod(num):
             return num % (10**9 + 7)
+        
+        def divisible_by_square(num):
+            root = floor(num ** .5)
+            divisor = 2
+            while divisor <= root:
+                if num % (divisor ** 2) == 0:
+                    return True
+                divisor += 1
+            return False
 
-        candidates = set([1, 2, 3, 5, 6, 7, 10, 11, 13, 14, 15, 17, 19, 21, 22, 23, 26, 29, 30])
+        candidates = set()
+
+        for num in nums:
+            if num in candidates or divisible_by_square(num):
+                continue
+            candidates.add(num)
+
         cnt = defaultdict(int)
         for num in nums:
             if num in candidates:
@@ -58,6 +73,6 @@ class Solution:
         get_subset(1, 1, 0)
         print(self.res)
         return self.res
-
+    
 Solution().squareFreeSubsetsFast([1, 1, 3, 3])
 Solution().squareFreeSubsets([1, 1, 3, 3])
