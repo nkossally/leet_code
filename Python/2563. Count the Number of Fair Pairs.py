@@ -1,4 +1,34 @@
 class Solution:
+    def countFairPairsFast(self, nums: List[int], lower: int, upper: int) -> int:
+        nums.sort()
+        less_than_lower_count = 0
+        more_than_upper_count = 0
+        
+        left = 0
+        right = len(nums) - 1
+
+        while left < len(nums) - 1:
+            while right > left and nums[left] + nums[right] > upper:
+                right -=1
+            if right == left:
+                break
+            more_than_upper_count  += right - left
+            left += 1
+        
+        left = 0
+        right = len(nums) - 1
+
+        while left < len(nums) - 1:
+            while right > left and nums[left] + nums[right] >= lower:
+                right -=1
+            if right == left:
+                break
+            less_than_lower_count  += right - left
+            left += 1
+        
+        return more_than_upper_count - less_than_lower_count
+
+        
     def countFairPairs(self, nums: List[int], lower: int, upper: int) -> int:
         nums.sort()
         i = 0
