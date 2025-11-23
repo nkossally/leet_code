@@ -35,3 +35,18 @@ class Solution(object):
         print(mins)
         print(maxes)
         return maxes[k -1][len(weights) - 1] - mins[k -1][len(weights) - 1]
+    
+
+    def putMarblesFast(self, weights, k):
+        """
+        :type weights: List[int]
+        :type k: int
+        :rtype: int
+        """
+        n = len(weights) - 1
+        weights = [weights[i] + weights[i + 1] for i in range(n)]
+        weights.sort()
+        res = 0
+        for i in range(k - 1):
+            res += weights[-1 - i] - weights[i]
+        return res
