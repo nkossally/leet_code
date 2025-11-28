@@ -1,4 +1,5 @@
 class Solution(object):
+    # best solution, o(n^2) time, o(n) space
     def countQuadruplets(self, nums):
         """
         :type nums: List[int]
@@ -21,7 +22,7 @@ class Solution(object):
         return ans
 
 
-    # passes 117/121
+    # passes 117/121, O(n^3) time, o(n) space
     def countQuadrupletsSlow(self, nums):
         """
         :type nums: List[int]
@@ -40,5 +41,22 @@ class Solution(object):
                     for i in range(j):
                         if nums[k] > nums[i]:
                             cnt[j] += 1
+
+        return ans
+
+    # O(n^4) time, too slow, o(1) space
+    def countQuadrupletsSlowest(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        n = len(nums)
+        ans = 0
+        for l in range(n):
+            for k in range(l):
+                for j in range(k):
+                    for i in range(j):
+                        if nums[i] < nums[k] and nums[k] < nums[j] and nums[j] < nums[l]:
+                            ans += 1
 
         return ans
