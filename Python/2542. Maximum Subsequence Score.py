@@ -1,3 +1,4 @@
+from heapq import heappop, heappush
 class Solution(object):
     def maxScore(self, nums1, nums2, k):
         """
@@ -8,21 +9,21 @@ class Solution(object):
         """
         total = res = 0
         h = []
+
+        # both lists are the same. just showing zip works
         list_1 = list(zip(nums1, nums2))
         list_2 = [[nums1[i], nums2[i]] for i in range(len(list_1))]
-        for a,b in sorted(list_2, key=lambda ab: -ab[1]):
+
+        list_2.sort(key=lambda elem: -elem[1])
+
+        # the list is ordered by the second value in the tuple, and the heap keeps the highest values of the initial value of each tuple
+
+        for a,b in list_2:
             heappush(h, a)
             total += a
+            # even if you pop A, total * b will be less than other values so illegitimate scores are never the result
             if len(h) > k:
                 total -= heappop(h)
             if len(h) == k:
                 res = max(res, total * b)
         return res
-
-arr = [1, 2, 3]
-arr2 = ["a", "b", "c"]
-arr3 = ["a", "b"]
-list_1 = list(zip(arr, arr2))
-list_2 = list(zip(arr, arr3))
-print(list_1)
-print(list_2)  # Output: [(1, 'a'), (2, '  # Output: [(1, 'a'), (2, '
