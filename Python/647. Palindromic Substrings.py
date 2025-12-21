@@ -1,3 +1,4 @@
+from typing import List 
 class Solution(object):
     def countSubstrings(self, s):
         """
