@@ -58,3 +58,24 @@ class Solution:
                     min_count = min(min_count, count)
 
         return -1 if min_count == float("inf") else min_count
+    
+    def takeCharactersFast(self, s: str, k: int) -> int:
+        # Total counts
+        count = [0, 0, 0]
+        for c in s:
+            count[ord(c) - ord('a')] += 1
+
+        if min(count) < k:
+            return -1
+
+        # Sliding Window
+        res = float("inf")
+        l = 0
+        for r in range(len(s)):
+            count[ord(s[r]) - ord('a')] -= 1
+
+            while min(count) < k and l <= r:
+                count[ord(s[l]) - ord('a')] += 1
+                l += 1
+            res = min(res, len(s) - (r - l + 1))
+        return res
