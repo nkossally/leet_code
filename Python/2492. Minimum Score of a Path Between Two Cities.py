@@ -47,3 +47,23 @@ class Solution:
                     resolved_dist = other_dist if other_node != 1 else min_1_cost
                     stack.append([other_node, min(cost, resolved_dist), seen_cpy])
         return res
+
+
+    def minScoreFast(self, n: int, roads: List[List[int]]) -> int:
+        graph = defaultdict(dict)
+        for u, v, w in roads:
+            graph[u][v] = graph[v][u] = w
+        
+        min_score = float('inf')
+        visited = set()
+        queue = [1]
+
+        while queue:
+            node = queue.pop()
+            for adj, score in graph[node].items():
+                if adj not in visited:
+                    queue.append(adj)
+                    visited.add(adj)
+                min_score = min(min_score, score)
+                
+        return min_score
