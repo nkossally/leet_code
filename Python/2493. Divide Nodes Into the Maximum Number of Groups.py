@@ -63,12 +63,12 @@ class Solution:
             g[b - 1].append(a - 1)
         d = defaultdict(int)
         for i in range(n):
-            q = deque([i])
+            q = [i]
             dist = [0] * n
             dist[i] = mx = 1
             root = i
             while q:
-                a = q.popleft()
+                a = q.pop(0)
                 root = min(root, a)
                 for b in g[a]:
                     if dist[b] == 0:
