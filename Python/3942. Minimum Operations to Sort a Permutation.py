@@ -38,8 +38,7 @@ class Solution:
                 res_1 = 0
             else:
                 way_1 = increasing_pivot if nums[0] > nums[-1] else float("inf")
-                way_2 = increasing_pivot + 2 if nums[increasing_pivot] > nums[-1] else float("inf")
-                print(increasing_pivot, increasing_pivot + 2)
+                way_2 = len(nums) - increasing_pivot + 2 if nums[0] > nums[-1] else float("inf")
                 res_1 = min(way_1, way_2)
         if decreasing_pivot != -1:
             if decreasing_pivot == None:
@@ -48,8 +47,6 @@ class Solution:
                 way_1 = decreasing_pivot + 1 if nums[0] < nums[-1] else float("inf")
                 way_2 = len(nums) - decreasing_pivot + 1 if nums[0] < nums[-1] else float("inf")
                 res_2 = min(way_1, way_2 )
-                print(decreasing_pivot + 1, len(nums) - decreasing_pivot + 1 )
-        print("res_1", res_1, "res_2", res_2)
         res = min(res_1, res_2)
         return res if res != float("inf") else -1
 
