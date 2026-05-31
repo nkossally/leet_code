@@ -1,3 +1,6 @@
+from collections import defaultdict
+from typing import List
+
 class Solution(object):
     def minCost(self, n, prices, roads):
         """
