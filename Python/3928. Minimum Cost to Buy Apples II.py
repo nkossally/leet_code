@@ -1,6 +1,5 @@
 from collections import defaultdict
 from typing import List
-
 class Solution(object):
     def minCost(self, n, prices, roads):
         """
@@ -11,46 +10,38 @@ class Solution(object):
         """
         connections = {i: {} for i in range(n)}
         for u, v, cost, tax in roads:
-            connections[u][v] = [cost, tax]
-            connections[v][u] = [cost, tax]
+            connections[u][v] = [cost, tax * cost]
+            connections[v][u] = [cost, tax * cost]
 
-        paths = {i : defaultdict(list) for i in range(n)}
+        costs = {i : defaultdict(lambda: float("inf")) for i in range(n)}
+        tax_costs = {i : defaultdict(lambda: float("inf")) for i in range(n)}
 
-        def get_all_paths(path):
+        def get_all_paths(path, cost, tax_cost):
             curr_node = path[-1]
             if len(path) > 1:
-                paths[path[0]][path[-1]].append(path)
+                costs[path[0]][path[-1]] = min(costs[path[0]][path[-1]], cost)
+                tax_costs[path[0]][path[-1]] = min(tax_costs[path[0]][path[-1]], tax_cost)
 
             path_set = set(path)
             for adj_node in connections[curr_node]:
                 if adj_node not in path_set:
-                    get_all_paths(path[:] + [adj_node])
+                    new_cost = cost + connections[path[-1]][adj_node][0]
+                    new_tax_cost = tax_cost + connections[path[-1]][adj_node][1]
+
+                    get_all_paths(path[:] + [adj_node], new_cost, new_tax_cost)
         
         for node in range(n):
-            get_all_paths([node])
+            get_all_paths([node], 0, 0)
 
         res = []
 
         for i in range(n):
             min_cost = prices[i]
-            for j in range(n):
-                if j != i and prices[j] < prices[i]:
-                    j_paths = paths[i][j]
-                    to_min = float("inf")
-                    back_min = float("inf")
-                    for path in j_paths:
-                        to_cost = 0
-                        from_cost = 0
-                        for idx, node in enumerate(path):
-                            if idx == 0:
-                                continue
-                            prev = path[idx - 1]
-                            cost, tax = connections[prev][node]
-                            to_cost += cost
-                            from_cost += cost * tax
-                        to_min = min(to_min, to_cost)
-                        back_min = min(back_min, from_cost)
-                    min_cost = min(min_cost,prices[j] + to_min + back_min)
+            for j in costs:
+                cost = costs[i][j]
+                tax_cost = tax_costs[i][j]
+                min_cost = min(min_cost, cost + tax_cost + prices[j])
+
             res.append(min_cost)
 
 
