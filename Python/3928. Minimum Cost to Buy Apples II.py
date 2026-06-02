@@ -151,3 +151,58 @@ class Solution(object):
             ans[src] = best
 
         return ans
+
+
+    def minCostNotFastEnough(self, n, prices, roads):
+        """
+        :type n: int
+        :type prices: List[int]
+        :type roads: List[List[int]]
+        :rtype: List[int]
+        """
+        inf = float("inf")
+        costs = { i : defaultdict(lambda: inf) for i in range(n) }
+        tax_costs = { i : defaultdict(lambda: inf) for i in range(n) }
+
+        for a, b, cost, tax in roads:
+            costs[a][b] = cost
+            costs[b][a] = cost
+            tax_costs[a][b] = cost * tax
+            tax_costs[b][a] = cost * tax
+        
+        res = prices[:]
+        for node in range(n):
+
+            to_cost = [inf for _ in range(n)]
+            to_cost[node] = 0
+            to_cost_tax = [inf for _ in range(n)]
+            to_cost_tax[node] = 0
+
+            heap = [[node, 0]]
+
+            while heap:
+                node_2, cost_1 = heapq.heappop(heap)
+
+                for node_3, cost_2 in costs[node_2].items():
+                    if to_cost[node_3] > cost_1 + cost_2:
+                        heapq.heappush(heap, [node_3, cost_1 + cost_2])
+                        to_cost[node_3] = cost_1 + cost_2
+            
+
+            heap = [[node, 0]]
+
+            while heap:
+                node_2, cost_1 = heapq.heappop(heap)
+
+                for node_3, cost_2 in tax_costs[node_2].items():
+                    if to_cost_tax[node_3] > cost_1 + cost_2:
+                        heapq.heappush(heap, [node_3, cost_1 + cost_2])
+                        to_cost_tax[node_3] = cost_1 + cost_2
+            
+            for i in range(n):
+                if to_cost[i] == inf or to_cost_tax[i] == inf:
+                    continue
+                total_cost = to_cost[i] + to_cost_tax[i] + prices[i]
+                res[node] = min(res[node], total_cost)
+        return res
+
