@@ -1,5 +1,5 @@
 from math import floor
-from typing import List
+from typing import List, Set
 
 class Solution:
     def minGenerations(self, points: List[List[int]], target: List[int]) -> int:
@@ -36,12 +36,15 @@ class Solution:
         def handle_generation(old, new):
             new_points = set()
             old_set = setify(old)
+            # print("old", old)
+            # print("old set", old_set)
+            # print("new", new)
             for i in range(len(old)):
                 for j in range(len(new)):
                     a, b, c = old[i]
                     d, e, f = new[j]
                     arr = [floor((a + d)/2), floor((b + e)/2),floor((c + f)/2)]
-                    arr_str = ", ".join(map(str, arr))
+                    arr_str = ",".join(map(str, arr))
                     if arr_str not in old_set:
                         new_points.add(arr_str)
                     if arr == target:
@@ -50,12 +53,16 @@ class Solution:
                 for j in range(i + 1, len(new)):
                     a, b, c = new[i]
                     d, e, f = new[j]
+                    if a==d and b == e and c == f:
+                        continue
                     arr = [floor((a + d)/2), floor((b + e)/2),floor((c + f)/2)]
                     arr_str = ", ".join(map(str, arr))
                     if arr_str not in old_set:
                         new_points.add(arr_str)                    
                     if arr == target:
                         return [True, []]
+            # print("new_points", new_points)
+            # print("list new", [listify(new_points)])
             return [False] + [listify(new_points)]
         
         count = 0
@@ -67,10 +74,12 @@ class Solution:
             found, newest_points = handle_generation(old_points, new_points)
             if found:
                 return count
+            if len(newest_points) == 0:
+                return -1
             else:
                 old_points += new_points
                 new_points = newest_points
-            if count > 7:
+            if count > 13:
                 return -1
 
     def minGenerationsFast(self, points: List[List[int]], target: List[int]) -> int:
@@ -106,3 +115,9 @@ class Solution:
             if not new_list:
                 return -1
             point_list.extend(new_list)
+    
+points = [[3,2,3],[5,5,4],[0,5,0],[4,6,2],[3,6,3],[3,1,2],[6,4,1]]
+target = [2,3,4]
+sol = Solution()
+print(sol.minGenerations(points, target))
+print(sol.minGenerationsFast(points, target))
