@@ -3,6 +3,25 @@ from typing import List
 
 class Solution:
     def minGenerations(self, points: List[List[int]], target: List[int]) -> int:
+        def is_between(num, lower, upper):
+            return num >= lower and num <= upper
+        
+        max_a, max_b, max_c = points[0]
+        min_a, min_b, min_c = points[0]
+ 
+        for a, b, c in points:
+            max_a = max(max_a, a)
+            min_a = min(min_a, a)
+            max_b = max(max_b, b)
+            min_b = min(min_b, b)
+            max_c = max(max_c, c)
+            min_c = min(min_c, c)
+        
+        target_x, target_y, target_z = target
+        if not (is_between(target_x, min_a, max_a) and is_between(target_y, min_b, max_b) and is_between(target_z, min_c, max_c)):
+            return -1
+
+
         if target in points:
             return 0
         def handle_generation(old, new):
