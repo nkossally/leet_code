@@ -152,51 +152,64 @@ class Solution(object):
 
         return ans
 
-
-    def minCostNotFastEnough(self, n, prices, roads):
+    def minCostDjikstraSlow(self, n, prices, roads):
         """
         :type n: int
         :type prices: List[int]
         :type roads: List[List[int]]
         :rtype: List[int]
         """
-        inf = float("inf")
-        costs = { i : defaultdict(lambda: inf) for i in range(n) }
-        tax_costs = { i : defaultdict(lambda: inf) for i in range(n) }
+        inf = 10**18
+        costs = [ [] for _ in range(n) ]
+        tax_costs = [ [] for _ in range(n) ]
 
         for a, b, cost, tax in roads:
-            costs[a][b] = cost
-            costs[b][a] = cost
-            tax_costs[a][b] = cost * tax
-            tax_costs[b][a] = cost * tax
+            costs[a].append([b, cost])
+            costs[b].append([a, cost])
+            tax_costs[a].append([b, cost * tax])
+            tax_costs[b].append([a, cost * tax])
         
         res = prices[:]
+
+        to_cost = [inf] * n
+        to_cost_tax = [inf] * n
+
         for node in range(n):
 
-            to_cost = [inf for _ in range(n)]
-            to_cost[node] = 0
-            to_cost_tax = [inf for _ in range(n)]
-            to_cost_tax[node] = 0
+            for i in range(n):
+                to_cost[i] = inf
 
-            heap = [[node, 0]]
+            to_cost[node] = 0
+
+            heap = [[0, node]]
 
             while heap:
-                node_2, cost_1 = heapq.heappop(heap)
+                cost_1, node_2 = heapq.heappop(heap)
+                if cost_1 > to_cost[node_2]:
+                    continue
 
-                for node_3, cost_2 in costs[node_2].items():
+                for node_3, cost_2  in costs[node_2]:
                     if to_cost[node_3] > cost_1 + cost_2:
-                        heapq.heappush(heap, [node_3, cost_1 + cost_2])
+                        heapq.heappush(heap, [cost_1 + cost_2, node_3])
                         to_cost[node_3] = cost_1 + cost_2
             
 
-            heap = [[node, 0]]
+            heap = [[ 0, node]]
+
+            for i in range(n):
+                to_cost_tax[i] = inf
+
+            to_cost_tax[node] = 0
 
             while heap:
-                node_2, cost_1 = heapq.heappop(heap)
+                cost_1, node_2 = heapq.heappop(heap)
 
-                for node_3, cost_2 in tax_costs[node_2].items():
+                if cost_1 > to_cost_tax[node_2]:
+                    continue
+
+                for node_3, cost_2 in tax_costs[node_2]:
                     if to_cost_tax[node_3] > cost_1 + cost_2:
-                        heapq.heappush(heap, [node_3, cost_1 + cost_2])
+                        heapq.heappush(heap, [cost_1 + cost_2, node_3])
                         to_cost_tax[node_3] = cost_1 + cost_2
             
             for i in range(n):
