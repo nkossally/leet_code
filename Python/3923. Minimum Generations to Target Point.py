@@ -6,6 +6,15 @@ class Solution:
         def is_between(num, lower, upper):
             return num >= lower and num <= upper
         
+        def setify(data: List[List[int]]) -> Set[str]:
+            """Convert [[1,2],[3,4]] -> {'1,2', '3,4'}"""
+            return {",".join(map(str, lst)) for lst in data}
+
+
+        def listify(data: Set[str]) -> List[List[int]]:
+            """Convert {'1,2', '3,4'} -> [[1,2], [3,4]]"""
+            return [[int(x) for x in s.split(",")] for s in data]
+            
         max_a, max_b, max_c = points[0]
         min_a, min_b, min_c = points[0]
  
@@ -25,24 +34,29 @@ class Solution:
         if target in points:
             return 0
         def handle_generation(old, new):
-            new_points = []
+            new_points = set()
+            old_set = setify(old)
             for i in range(len(old)):
                 for j in range(len(new)):
                     a, b, c = old[i]
                     d, e, f = new[j]
                     arr = [floor((a + d)/2), floor((b + e)/2),floor((c + f)/2)]
-                    new_points.append(arr)
+                    arr_str = ", ".join(map(str, arr))
+                    if arr_str not in old_set:
+                        new_points.add(arr_str)
                     if arr == target:
-                        return [True] + [new_points]                    
+                        return [True, []]                  
             for i in range(len(new)):
                 for j in range(i + 1, len(new)):
                     a, b, c = new[i]
                     d, e, f = new[j]
                     arr = [floor((a + d)/2), floor((b + e)/2),floor((c + f)/2)]
-                    new_points.append(arr)
+                    arr_str = ", ".join(map(str, arr))
+                    if arr_str not in old_set:
+                        new_points.add(arr_str)                    
                     if arr == target:
-                        return [True] + [new_points]
-            return [False] + [new_points]
+                        return [True, []]
+            return [False] + [listify(new_points)]
         
         count = 0
         new_points = points
@@ -56,7 +70,7 @@ class Solution:
             else:
                 old_points += new_points
                 new_points = newest_points
-            if count > 5:
+            if count > 7:
                 return -1
 
     def minGenerationsFast(self, points: List[List[int]], target: List[int]) -> int:
