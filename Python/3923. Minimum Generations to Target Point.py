@@ -83,38 +83,51 @@ class Solution:
                 return -1
 
     def minGenerationsFast(self, points: List[List[int]], target: List[int]) -> int:
-        point_set=set()
-        point_list=[]
-        for p in points:
-            string=f"{p[0]},{p[1]},{p[2]}"
-            point_set.add(string)
-            point_list.append(p)
-            if p[0]==target[0] and p[1]==target[1] and p[2]==target[2]:
+        def is_between(num, lower, upper):
+            return num >= lower and num <= upper
+        max_a, max_b, max_c = points[0]
+        min_a, min_b, min_c = points[0]
+        point_set = set()
+ 
+        for a, b, c in points:
+            point_set.add(str([a,b,c]))
+            if [a, b,c] == target:
                 return 0
-        count=0
+            max_a = max(max_a, a)
+            min_a = min(min_a, a)
+            max_b = max(max_b, b)
+            min_b = min(min_b, b)
+            max_c = max(max_c, c)
+            min_c = min(min_c, c)
+        
+        target_x, target_y, target_z = target
+        if not (is_between(target_x, min_a, max_a) and is_between(target_y, min_b, max_b) and is_between(target_z, min_c, max_c)):
+            return -1
+       
+        count = 0
+        new_points = []
+
         while True:
-            count+=1
-            new_list=[]
-            size=len(point_list)
-            for i in range(size):
-                for j in range(i+1,size):
-                    a=point_list[i]
-                    b=point_list[j]
-                    if a[0]==b[0] and a[1]==b[1] and a[2]==b[2]:
-                        continue
-                    e=(a[0]+b[0])//2
-                    f=(a[1]+b[1])//2
-                    g=(a[2]+b[2])//2
-                    string=f"{e},{f},{g}"
-                    if string not in point_set:
-                        point_set.add(string)
-                        arr=[e,f,g]
-                        if e==target[0] and f==target[1] and g==target[2]:
-                            return count
-                        new_list.append(arr)
-            if not new_list:
+            count += 1
+            for i in range(len(points)):
+                for j in range(i + 1, len(points)):
+                    a, b, c = points[i]
+                    d, e, f = points[j]
+                    m = (a + d)//2
+                    n = (b + e)//2
+                    o = (c + f)//2
+                    midpoint = [m, n, o]
+                    if midpoint == target:
+                        return count
+                    point_str = str(midpoint)
+                    if point_str not in point_set:
+                        point_set.add(point_str)
+                        new_points.append(midpoint)
+            if len(new_points) == 0:
                 return -1
-            point_list.extend(new_list)
+            points += new_points
+            new_points = []
+             
     
 points = [[3,2,3],[5,5,4],[0,5,0],[4,6,2],[3,6,3],[3,1,2],[6,4,1]]
 target = [2,3,4]
