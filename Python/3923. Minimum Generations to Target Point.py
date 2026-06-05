@@ -58,3 +58,37 @@ class Solution:
                 new_points = newest_points
             if count > 5:
                 return -1
+
+    def minGenerationsFast(self, points: List[List[int]], target: List[int]) -> int:
+        point_set=set()
+        point_list=[]
+        for p in points:
+            string=f"{p[0]},{p[1]},{p[2]}"
+            point_set.add(string)
+            point_list.append(p)
+            if p[0]==target[0] and p[1]==target[1] and p[2]==target[2]:
+                return 0
+        count=0
+        while True:
+            count+=1
+            new_list=[]
+            size=len(point_list)
+            for i in range(size):
+                for j in range(i+1,size):
+                    a=point_list[i]
+                    b=point_list[j]
+                    if a[0]==b[0] and a[1]==b[1] and a[2]==b[2]:
+                        continue
+                    e=(a[0]+b[0])//2
+                    f=(a[1]+b[1])//2
+                    g=(a[2]+b[2])//2
+                    string=f"{e},{f},{g}"
+                    if string not in point_set:
+                        point_set.add(string)
+                        arr=[e,f,g]
+                        if e==target[0] and f==target[1] and g==target[2]:
+                            return count
+                        new_list.append(arr)
+            if not new_list:
+                return -1
+            point_list.extend(new_list)
