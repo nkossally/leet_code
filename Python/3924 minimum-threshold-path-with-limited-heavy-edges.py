@@ -1,11 +1,12 @@
+from collections import deque
+from typing import List
+
 class Solution:
     def minimumThreshold(self, n: int, edges: List[List[int]], source: int, target: int, k: int) -> int:
         if source == target:
             return 0
         connections = [{} for _ in range(n)]
 
-        lowest_weight = float("inf")
-        highest_weight = float("-inf")
         weights_set = set()
         weights_set.add(0)
         for u, v, w in edges:
@@ -16,7 +17,6 @@ class Solution:
         weights.sort()
 
         queue = []
-        # the first elem in a path is the largest weight, then the path nodes follow
         paths = []
 
         for u, w in connections[source].items():
@@ -58,4 +58,49 @@ class Solution:
                 if count <= k:
                     return threshold
         return -1
-                
+
+
+
+
+    def bfs01(self, n, k, src, target, mid, adj):
+        dist = [10**9] * n
+        dq = deque()
+
+        dist[src] = 0
+        dq.append(src)
+
+        while dq:
+            u = dq.popleft()
+
+            for v, w in adj[u]:
+                wt = 1 if w > mid else 0
+
+                if dist[u] + wt < dist[v]:
+                    dist[v] = dist[u] + wt
+
+                    if wt == 0:
+                        dq.appendleft(v)
+                    else:
+                        dq.append(v)
+
+        return dist[target] <= k
+
+    def minimumThresholdFast(self, n: int, edges: List[List[int]], source: int, target: int, k: int) -> int:
+        adj = [[] for _ in range(n)]
+
+        for u, v, w in edges:
+            adj[u].append((v, w))
+            adj[v].append((u, w))
+
+        left, right, ans = 0, 10**9, -1
+
+        while left <= right:
+            mid = (left + right) // 2
+
+            if self.bfs01(n, k, source, target, mid, adj):
+                ans = mid
+                right = mid - 1
+            else:
+                left = mid + 1
+
+        return ans
