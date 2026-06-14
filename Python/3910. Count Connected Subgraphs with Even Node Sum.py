@@ -1,3 +1,6 @@
+from itertools import combinations
+
+
 class Solution:
     def evenSumSubgraphs(self, nums: list[int], edges: list[list[int]]) -> int:
         n = len(nums)
@@ -43,4 +46,52 @@ class Solution:
             if visited == mask:
                 ans += 1
                 
+        return ans
+
+
+
+    def evenSumSubgraphsNoBitwise(self, nums: list[int], edges: list[list[int]]) -> int:
+        n = len(nums)
+
+        adj = [[] for _ in range(n)]
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+
+        ans = 0
+
+        # Generate every non-empty subset of nodes
+        for size in range(1, n + 1):
+            for subset in combinations(range(n), size):
+
+                subset_set = set(subset)
+
+                # 1. Calculate sum of nodes in subset
+                curr_sum = sum(nums[i] for i in subset)
+
+                if curr_sum % 2 != 0:
+                    continue
+
+                # 2. DFS to check connectivity
+                start_node = subset[0]
+
+                visited = [False] * n
+                stack = [start_node]
+                visited[start_node] = True
+
+                visited_count = 0
+
+                while stack:
+                    u = stack.pop()
+                    visited_count += 1
+
+                    for v in adj[u]:
+                        if v in subset_set and not visited[v]:
+                            visited[v] = True
+                            stack.append(v)
+
+                # 3. Connected iff we reached every node in subset
+                if visited_count == len(subset):
+                    ans += 1
+
         return ans
