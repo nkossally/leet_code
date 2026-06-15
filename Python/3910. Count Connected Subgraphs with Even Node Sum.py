@@ -95,3 +95,15 @@ class Solution:
                     ans += 1
 
         return ans
+    
+
+def test():
+    for mask in range(1, 16):
+        print("mask", mask, bin(mask) )
+        for i in range(4):
+            print("i", i)
+            print("shift", (mask >> i) & 1)
+            if((mask >> i) & 1):
+                print("True")
+
+test()
