@@ -1,4 +1,17 @@
 import heapq
+from dataclasses import dataclass
+
+@dataclass
+class Node:
+    cost: int
+    idx: int
+    left: int
+    right: int
+    is_dead: bool = False
+
+    def __lt__(self, other):
+        return self.cost < other.cost
+
 class Solution:
     def minOperations(self, nums: list[int], k: int) -> int:
         peaks = set()
@@ -58,7 +71,6 @@ class Solution:
 
 
     def minOperationsFast(self, nums: list[int], k: int) -> int:
-        peaks = set()
         n = len(nums)
         res = 0
         queue = []
@@ -105,4 +117,57 @@ class Solution:
 
         return res if count >= k else -1
 
+
+
+    # see node classs defined above
+    def minOperationsReadable(self, nums: list[int], k: int) -> int:
+        n = len(nums)
+        queue = []
+        nodes = []
         
+        # 1. Initialize nodes and push to priority queue
+        for i, num in enumerate(nums):
+            left = (i - 1 + n) % n
+            right = (i + 1) % n
+            target = max(nums[left], nums[right]) + 1
+            cost = max(target - num, 0)
+            
+            node = Node(cost, i, left, right)
+            heapq.heappush(queue, node)
+            nodes.append(node)
+
+        res = 0
+        count = 0
+        
+        # 2. Process the queue
+        while count < k and queue:
+            node = heapq.heappop(queue)
+            
+            if node.is_dead:
+                continue
+                
+            res += node.cost
+            count += 1
+            node.is_dead = True
+            
+            left_node = nodes[node.left]
+            right_node = nodes[node.right]
+            left_node.is_dead = True
+            right_node.is_dead = True
+            
+            if node.left == node.right or left_node.left == right_node.idx or right_node.right == left_node.idx:
+                continue
+                
+            # Create new merged node
+            new_cost = left_node.cost + right_node.cost - node.cost
+            new_node = Node(new_cost, node.idx, left_node.left, right_node.right)
+            
+            nodes[node.idx] = new_node
+            
+            # Update adjacent nodes
+            nodes[left_node.left].right = node.idx
+            nodes[right_node.right].left = node.idx
+            
+            heapq.heappush(queue, new_node)
+
+        return res if count >= k else -1
