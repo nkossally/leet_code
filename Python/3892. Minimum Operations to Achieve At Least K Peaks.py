@@ -20,6 +20,8 @@ class Solution:
         
         def recur( peaks, queue, costs, cost):
             # print( "peaks", peaks,"queue", queue, "costs", costs, "cost", cost)
+            if cost >= self.res:
+                return
             if len(peaks) >= k:
                 self.res = min(self.res, cost)
                 return
@@ -35,6 +37,10 @@ class Solution:
 
             left = (i - 1 + n) % n
             right = (i + 1) % n
+            
+            if left in costs or right in costs:
+                recur( peaks, queue, costs, cost)
+            
             if left in costs_2:
                 other_cost = costs_2.pop(left)
                 cost_2 -= other_cost
@@ -43,7 +49,6 @@ class Solution:
                 other_cost = costs_2.pop(right)
                 cost_2 -= other_cost
                 peaks_2.remove(right)
-            recur( peaks, queue, costs, cost)
             recur( peaks_2, queue_2, costs_2, cost_2)
 
         recur(peaks, queue, costs, 0)
