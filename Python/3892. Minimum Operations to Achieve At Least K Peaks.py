@@ -55,4 +55,54 @@ class Solution:
 
         return self.res if self.res != float("inf") else -1
 
+
+
+    def minOperationsFast(self, nums: list[int], k: int) -> int:
+        peaks = set()
+        n = len(nums)
+        res = 0
+        queue = []
+        nodes = []
+        count = 0
+        
+        for i, num in enumerate(nums):
+            left = (i - 1 + n) % n
+            right = (i + 1) % n
+            target = max(nums[left], nums[right]) + 1
+            cost = max(target - num, 0)
+            # each node consists of ints representing cost, idx in nodes list, left idx, right idx, and a final value of 1 or 0 signifying it is dead or alive. Ints are used so that the node can be in a priority queue
+            node = [cost, i, left, right, 0]
+            heapq.heappush(queue, node)
+            nodes.append(node)
+        
+        while count < k and queue:
+            node = heapq.heappop(queue)
+            cost, idx, left, right, dead = node
+            # print("cost", cost,"idx", idx, "left",left, "right", right, "dead", dead)
+            # node is dead if last val is 1
+            if dead:
+                continue
+            res += cost
+            count += 1
+            node[-1] = True
+
+            left_node = nodes[left]
+            right_node = nodes[right]
+            left_node[-1] = 1
+            right_node[-1] = 1
+
+            if left == right or left_node[2] == right_node[1] or right_node[3] == left_node[1]:
+                continue
+
+            new_cost = left_node[0] + right_node[0] - cost
+            new_node = [new_cost, idx, left_node[2], right_node[3], 0]
+            nodes[idx] = new_node
+            new_left_node = nodes[left_node[2]]
+            new_right_node = nodes[right_node[3]]
+            new_left_node[3] = idx
+            new_right_node[2] = idx
+            heapq.heappush(queue, new_node)
+
+        return res if count >= k else -1
+
         
